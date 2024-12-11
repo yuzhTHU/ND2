@@ -1189,6 +1189,7 @@ class GDExprClass:
         elif item in self.word2id: return item, prefix # placeholder / variable / constant / coefficient
         elif item in ['<Cv>', '<Ce>']: return item, prefix
         elif is_float(item): return format(float(item), f'.{N}f') if '.' in str(item) else str(item), prefix
+        elif isinstance(item, np.ndarray): return f'<{np.mean(item)}+-{np.std(item)} ({len(item.reshape(-1))})>', prefix
         else:
             # raise ValueError(f'Unknown item {item}')
             # logger.warning(f'Unknown item {item}')

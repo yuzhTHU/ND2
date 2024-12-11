@@ -33,16 +33,16 @@ class LogFormatter(logging.Formatter):
         ]
         if record.levelname in ['WARNING', 'ERROR', 'CRITICAL']:
             prefixes.append(f"{record.filename}:{record.lineno}")
-        prefix = f"[{'|'.join(map(str, prefixes))}] "
+        prefix = f"[{'|'.join(map(str, prefixes))}]"
         message = record.getMessage() or ''
         message = message.replace('\n', '\n' + ' '*len(prefix))
         if self.colorful:
-            return self.color_dict.get(record.levelname, '{}').format(prefix) + message
+            return self.color_dict.get(record.levelname, '{}').format(prefix) + " " + message
         else:
-            return prefix + re.sub(r'\033\[\d+;?\d*m', '', message)
+            return prefix + " " + re.sub(r'\033\[\d+;?\d*m', '', message)
 
 
-def init_logger(exp_name, log_file=None, quiet=False, root_name='ND2'):
+def init_logger(exp_name, log_file=None, quiet=False, root_name='ND2', info_level='info'):
     """
     运行一次 init_logger 后，可以通过 logging.getLogger('{root_name}.xxx') 获取 logger,
     与这里设置的 logger 具有相同的 Handler 和 Formatter
@@ -59,7 +59,7 @@ def init_logger(exp_name, log_file=None, quiet=False, root_name='ND2'):
     logger.handlers = []
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.WARNING if quiet else logging.INFO)
+    console_handler.setLevel(getattr(logging, info_level.upper()))
     console_handler.setFormatter(LogFormatter(exp_name, colorful=True, start_time=start_time))
     logger.addHandler(console_handler)
 

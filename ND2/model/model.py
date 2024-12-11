@@ -4,7 +4,7 @@ import logging
 import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-from typing import List
+from typing import List, Dict, Tuple, Union, Literal
 from .utils import GNN, PositionalEncoding
 from ..utils import NamedTimer
 from ..GDExpr import GDExpr
@@ -292,7 +292,14 @@ class NDformer(nn.Module):
         value, policy, index = self.decoder(data_emb, expr_ids, parents, types)
         return value, policy, index
 
-    def set_data(self, Xv, Xe, A, G, Y, root_type, cache_data_emb=True):
+    def set_data(self, 
+                 Xv:Dict[str, np.ndarray], 
+                 Xe:Dict[str, np.ndarray], 
+                 A:np.ndarray, 
+                 G:np.ndarray, 
+                 Y:np.ndarray, 
+                 root_type:Literal['node', 'edge'], 
+                 cache_data_emb=True):
         """
         Input:
         - Xv: Dict of str -> (N, V)
@@ -302,12 +309,28 @@ class NDformer(nn.Module):
         - Y: (N, V or E)
         - root_type: 'node' or 'edge'
         """
-        self.var_dict = {'A': np.array(A, dtype=int), 'G': np.array(G, dtype=int)} | \
-                        {'out': np.array(Y)} | \
-                        {f'v{i}': np.array(v) for i, (k, v) in enumerate(Xv.items(), 1)} | \
-                        {f'e{i}': np.array(v) for i, (k, v) in enumerate(Xe.items(), 1)}
-        self.var_map = {k: f'v{i}' for i, (k, v) in enumerate(Xv.items(), 1)} | \
-                       {k: f'e{i}' for i, (k, v) in enumerate(Xe.items(), 1)}
+        V = A.shape[0]
+        E = G.shape[0]
+        T = Y.shape[0]
+        assert A.shape == (V, V)
+        assert G.shape == (E, 2)
+        assert (Y.shape == (T, V) if root_type == 'node' else (T, E))
+        
+        var_dict = dict(A=A, G=G, out=Y)
+        for idx, (k, v) in enumerate(Xv.items(), 1):
+            assert v.shape in [(T, V), (1, V), (V,), (T, 1)]
+            if v.ndim == 1: v = v.reshape(1, -1).repeat(T, axis=0)
+            if v.shape[-1] == 1: v = v.repeat(V, axis=-1)
+            var_dict[f'v{idx}'] = v
+        for idx, (k, e) in enumerate(Xe.items(), 1):
+            assert e.shape in [(T, E), (1, E), (E,), (T, 1)]
+            if e.ndim == 1: e = e.reshape(1, -1).repeat(T, axis=0)
+            if e.shape[-1] == 1: e = e.repeat(E, axis=-1)
+            e = e.expand(T, E)
+            var_dict[f'e{idx}'] = e
+        self.var_dict = var_dict
+        self.var_map = {k: f'v{i}' for i, k in enumerate(Xv, 1)} | \
+                       {k: f'e{i}' for i, k in enumerate(Xe, 1)}
         self.i_var_map = {v: k for k, v in self.var_map.items()}
         self.root_type = root_type
         self.cache_data_emb = cache_data_emb
@@ -357,7 +380,7 @@ class NDformer(nn.Module):
             policy = policy.softmax(-1).cpu().numpy()
             timer.add('post')
 
-            # if timer.total() > 10: logger.note(timer.pop())
+            if timer.total() > 10: logger.debug(timer.pop())
         return policy
 
     def forward(self, prefixes:List[List[str]], root_type:str, 

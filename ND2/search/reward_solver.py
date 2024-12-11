@@ -22,6 +22,7 @@ class RewardSolver(object):
                  Y:np.ndarray,
                  mask:np.ndarray=None,
                  complexity_base=0.999,
+                 sample_num=500,
                  **kwargs):
         self.Xv = {k: np.array(v) for k, v in Xv.items()}
         self.Xe = {k: np.array(v) for k, v in Xe.items()}
@@ -30,82 +31,12 @@ class RewardSolver(object):
         self.Y = np.array(Y)
         self.mask = np.array(mask) if mask is not None else None
         self.complexity_base = complexity_base
+        self.sample_num = sample_num
         if kwargs: logger.warning(f'Unused arguments: {kwargs} in RewardSolver')
 
         self.var_out = self.Y.var() if mask is None else self.Y[self.mask].var()
         self.var_dict = {'A': self.A, 'G': self.G, 'out': self.Y, **self.Xv, **self.Xe}
-
         assert len(set(Xv.keys()) | set(Xe.keys())) == len(Xv) + len(Xe)
-
-    # def reward_func(self, MSE, prefix, var_dict):
-    #     out = var_dict['out']
-    #     if self.config.use_mask: out = out[var_dict['mask']]
-    #     r_MSE = MSE / out.var().clip(1e-7)
-    #     if r_MSE < 1e-3: reward = 1 - r_MSE
-    #     else: reward = self.config.complexity_base ** len(prefix) / (1 + r_MSE)
-    #     return reward
-
-    # def reward2R2(self, reward, prefix, var_dict):
-    #     out = var_dict['out']
-    #     if self.config.use_mask: out = out[var_dict['mask']]
-    #     if reward > 1-1e-3: return reward
-    #     return 2 - self.config.complexity_base ** len(prefix) / reward
-
-    # def reward2RMSE(self, reward, prefix, var_dict):
-    #     out = var_dict['out']
-    #     if self.config.use_mask: out = out[var_dict['mask']]
-    #     if reward > 1-1e-3: return np.sqrt((1-reward) * out.var().clip(1e-7))
-    #     return np.sqrt((self.config.complexity_base ** len(prefix) / reward - 1) * out.var().clip(1e-7))
-    
-    # def get_MSE_func(self, prefix, var_dict, split_func=None, sample_num=None):
-    #     """
-    #     Arguments:
-    #     - prefix: List[str], the prefix expression to be evaluated
-    #     - var_dict: dict, the variables dictionary
-    #         - A: (V, V) np.ndarray, the adjacency matrix
-    #         - G: (E, 2) np.ndarray, the edge list
-    #         - out: (T, V) np.ndarray, the output data
-    #         - (optional) mask: (T, V) np.ndarray, the mask of the output data
-    #         - other variables: (T, V) / (T, E) / (1, V) / (1, E) np.ndarray
-    #     - split_func: Callable, the function to split the coefficients into coef_list and coef_dict
-    #         - coef_list: List[float], the coefficients of the prefix expression
-    #         - coef_dict: dict(Cv=(N_Cv, V) np.ndarray, Ce=(N_Ce, E) np.ndarray), the coefficients of the prefix expression
-    #     - sample_num: int, the number of samples to calc MSE
-
-    #     Returns:
-    #     - MSE_func: Callable, the function to calc MSE
-    #         - params: np.ndarray, the coefficients of the prefix expression
-    #         - (optional) coef_list, coef_dict
-    #     """
-    #     if split_func is None:
-    #         V, E = var_dict['A'].shape[0], var_dict['G'].shape[0]
-    #         N_Coef, N_Cv, N_Ce = prefix.count('<C>'), prefix.count('Cv'), prefix.count('Ce')
-    #         split_func = lambda x: (list(x[:N_Coef]), 
-    #                                 dict(Cv=x[N_Coef:N_Coef + N_Cv * V].reshape(N_Cv, V),
-    #                                     Ce=x[N_Coef + N_Cv * V:].reshape(N_Ce, E)))
-    #     if sample_num is not None:
-    #         N = int(np.ceil(sample_num / var_dict['out'].shape[1]))
-    #         T = var_dict['out'].shape[0]
-    #         if N < T:
-    #             sample_idx = np.random.choice(T, N, replace=False)
-    #             var_dict = var_dict.copy()
-    #             for var in set(var_dict) - {'A', 'G', 'A_raw', 'G_raw'}:
-    #                 var_dict[var] = var_dict[var][sample_idx]
-    #     f = GDExpr.lambdify(prefix, var_dict, strict=False)
-        
-    #     def MSE_func(params=None, coef_list=None, coef_dict=None):
-    #         if params is not None: 
-    #             coef_list, coef_dict = split_func(params)
-    #         pred = f(coef_dict, coef_list) if callable(f) else f
-    #         residual = var_dict['out'] - pred
-    #         if self.config.use_mask: residual = residual[var_dict['mask']]
-    #         MSE = np.mean(residual ** 2)
-    #         # KL_div = var_dict['out'] * np.log(var_dict['out'] / (pred+1e-6)) + (1 - var_dict['out']) * np.log((1 - var_dict['out']) / (1 - pred + 1e-6))
-    #         # if self.config.use_mask: KL_div = KL_div[var_dict['mask']]
-    #         # MSE = np.mean(KL_div)
-    #         return MSE
-    #     return MSE_func
-            
 
     def solve(self, 
               prefix:List[str], 
@@ -117,11 +48,6 @@ class RewardSolver(object):
         """
         Arguments:
         - prefix: List[str], the prefix expression to be evaluated
-        - var_dict: dict, the variables dictionary
-        - A: (V, V) np.ndarray, the adjacency matrix
-        - G: (E, 2) np.ndarray, the edge list
-            - out: (T, V) np.ndarray, the output data
-            - other variables: (T, V) / (T, E) / (1, V) / (1, E) np.ndarray
         - sample: bool, whether to sample partial data for calc MSE
 
         Returns:
@@ -136,8 +62,7 @@ class RewardSolver(object):
         V, E = self.A.shape[0], self.G.shape[0]
         num_C, num_Cv, num_Ce = prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')
 
-        sample_num = 500
-        N = int(np.ceil(sample_num / self.Y.shape[1]))
+        N = int(np.ceil(self.sample_num / self.Y.shape[1]))
         T = self.Y.shape[0]
         if sample and (N < T):
             sample_idx = np.random.choice(T, N, replace=False)
@@ -238,13 +163,13 @@ class RewardSolver(object):
         result = dict(
             R2 = 1 - np.mean(residual ** 2) / np.var(true),
             complexity = len(prefix),
-            # RMSE = np.sqrt(np.mean(residual ** 2)),
-            # MAE = np.mean(np.abs(residual)),
-            # MAPE = np.mean(np.abs(residual) / np.abs(true).clip(1e-6)),
-            # sMAPE = 2 * np.mean(np.abs(residual) / (np.abs(true) + np.abs(pred)).clip(1e-6)),
-            # wMAPE = np.sum(np.abs(residual)) / np.sum(np.abs(true)),
-            # ACC2 = np.mean(np.abs(residual) <= 1e-2),
-            # ACC3 = np.mean(np.abs(residual) <= 1e-3),
+            RMSE = np.sqrt(np.mean(residual ** 2)),
+            MAE = np.mean(np.abs(residual)),
+            MAPE = np.mean(np.abs(residual) / np.abs(true).clip(1e-6)),
+            sMAPE = 2 * np.mean(np.abs(residual) / (np.abs(true) + np.abs(pred)).clip(1e-6)),
+            wMAPE = np.sum(np.abs(residual)) / np.sum(np.abs(true)),
+            ACC2 = np.mean(np.abs(residual) <= 1e-2),
+            ACC3 = np.mean(np.abs(residual) <= 1e-3),
             ACC4 = np.mean(np.abs(residual) <= 1e-4),
         )
         return result
