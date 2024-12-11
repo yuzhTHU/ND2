@@ -638,6 +638,7 @@ class GDExprClass:
         elif item == 'aggr':
             G, A, e = var_dict['G'], var_dict['A'], val1
             V, E = A.shape[0], G.shape[0]
+            if not isinstance(e, np.ndarray): e = np.array([[e]])
             if e.shape[-1] == 1: e = np.repeat(e, E, axis=-1)
             v = np.zeros((*e.shape[:-1], V))
             for i in range(e.shape[-1]):
@@ -656,16 +657,19 @@ class GDExprClass:
         elif item == 'sour':
             G, A, v = var_dict['G'], var_dict['A'], val1
             V, E = A.shape[0], G.shape[0]
+            if not isinstance(v, np.ndarray): v = np.array([[v]])
             if v.shape[-1] == 1: v = np.repeat(v, V, axis=-1)
             return v[..., G[:, 0]], prefix, coeff_count
         elif item == 'targ':
             G, A, v = var_dict['G'], var_dict['A'], val1
             V, E = A.shape[0], G.shape[0]
+            if not isinstance(v, np.ndarray): v = np.array([[v]])
             if v.shape[-1] == 1: v = np.repeat(v, V, axis=-1)
             return v[..., G[:, 1]], prefix, coeff_count
         elif item == 'rgga':
             G, A, e = var_dict['G'], var_dict['A'], val1
             V, E = A.shape[0], G.shape[0]
+            if not isinstance(e, np.ndarray): e = np.array([[e]])
             if e.shape[-1] == 1: e = np.repeat(e, G.shape[0], axis=-1)
             v = np.zeros((*e.shape[:-1], V))
             for i in range(e.shape[-1]):
@@ -710,7 +714,7 @@ class GDExprClass:
         """
         val, _prefix, _coeff_count = self._eval(prefix, var_dict, coef_list, **kwargs)
         assert len(_prefix) == 0, f'{prefix} -> {_prefix}'
-        assert _coeff_count == (prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')), f'{_coeff_count} != ({prefix.count("<C>")}, {prefix.count("<Cv>")}, {prefix.count("Ce")})'
+        assert _coeff_count == (prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')), f'{_coeff_count} != ({prefix.count("<C>")}, {prefix.count("<Cv>")}, {prefix.count("<Ce>")})'
         return val
     
     def is_terminal(self, prefix:List[str]):
@@ -868,8 +872,9 @@ class GDExprClass:
             G, A = var_dict['G'], var_dict['A']
             V, E = A.shape[0], G.shape[0]
             def my_aggr(e):
+                if not isinstance(e, np.ndarray): e = np.array([[e]])
                 N = e.shape[0]
-                if e.shape[1] == 1: e = np.repeat(e, E, axis=1)
+                if e.shape[-1] == 1: e = np.repeat(e, E, axis=1)
                 out = np.zeros((e.shape[0], V))
                 if N >= E: 
                     for i in range(E): out[:, G[i, 1]] += e[:, i]
@@ -881,6 +886,7 @@ class GDExprClass:
         elif item == 'sour':
             G = var_dict['G']
             def sour(v):
+                if not isinstance(v, np.ndarray): v = np.array([[v]])
                 if v.shape[-1] == 1: return v
                 else: return v[:, G[:, 0]]
             if c1: return lambda var,coef: sour(f1(var,coef)), prefix, coeff_count
@@ -888,6 +894,7 @@ class GDExprClass:
         elif item == 'targ':
             G = var_dict['G']
             def targ(v):
+                if not isinstance(v, np.ndarray): v = np.array([[v]])
                 if v.shape[-1] == 1: return v
                 else: return v[:, G[:, 1]]
             if c1: return lambda var,coef: targ(f1(var,coef)), prefix, coeff_count
@@ -896,8 +903,9 @@ class GDExprClass:
             G, A = var_dict['G'], var_dict['A']
             V, E = A.shape[0], G.shape[0]
             def my_aggr(e):
+                if not isinstance(e, np.ndarray): e = np.array([[e]])
                 N = e.shape[0]
-                if e.shape[1] == 1: e = np.repeat(e, E, axis=1)
+                if e.shape[-1] == 1: e = np.repeat(e, E, axis=1)
                 out = np.zeros((e.shape[0], V))
                 if N >= E: 
                     for i in range(E): out[:, G[i, 0]] += e[:, i]
