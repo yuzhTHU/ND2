@@ -136,6 +136,19 @@ class RewardSolver(object):
         V, E = self.A.shape[0], self.G.shape[0]
         num_C, num_Cv, num_Ce = prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')
 
+        sample_num = 500
+        N = int(np.ceil(sample_num / self.Y.shape[1]))
+        T = self.Y.shape[0]
+        if sample and (N < T):
+            sample_idx = np.random.choice(T, N, replace=False)
+            var_dict = {'A': self.A, 'G': self.G, 'out': self.Y[sample_idx]} | \
+                       {k: (v[sample_idx] if v.ndim > 1 else v) for k, v in self.Xv.items()} | \
+                       {k: (v[sample_idx] if v.ndim > 1 else v) for k, v in self.Xe.items()}
+            Y = var_dict['out']
+        else:
+            var_dict = self.var_dict
+            Y = self.Y
+
         def params2coefdict(params):
             coef_dict = {
                 '<C>': params[:num_C],
@@ -153,8 +166,8 @@ class RewardSolver(object):
                     prefix_with_coef[i] = coef_dict[token][cnt[token]]
                     cnt[token] += 1
 
-            pred = GDExpr.eval(prefix_with_coef, self.var_dict, [], strict=False)
-            true = self.Y
+            pred = GDExpr.eval(prefix_with_coef, var_dict, [], strict=False)
+            true = Y
             if self.mask is not None:
                 pred = pred[self.mask]
                 true = true[self.mask]
