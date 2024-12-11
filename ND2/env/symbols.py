@@ -240,7 +240,7 @@ class Number(Symbol):
         if kwargs.get('raw', False): 
             return f'Number({np.array(self.value).tolist()}, "{self.nettype}", {self.fitable})'
         if kwargs.get('skeleton', False):
-            return f'\square' if kwargs.get('latex') else 'C'
+            return rf'\square' if kwargs.get('latex') else 'C'
         fmt = kwargs.get('number_format', '')
         if isinstance(self.value, (numbers.Number)) or self.value.size == 1:
             content = f'{self.value:{fmt}}'
@@ -428,47 +428,65 @@ class Sin(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.sin(self.operands[0].eval(*args, **kwargs))
+sin = lambda x: Sin(x)
+
 
 class Cos(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.cos(self.operands[0].eval(*args, **kwargs))
+cos = lambda x: Cos(x)
+
 
 class Tan(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.tan(self.operands[0].eval(*args, **kwargs))
+tan = lambda x: Tan(x)
+
 
 class Log(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.log(self.operands[0].eval(*args, **kwargs))
+log = lambda x: Log(x)
+
 
 class Exp(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.exp(self.operands[0].eval(*args, **kwargs))
+exp = lambda x: Exp(x)
+
 
 class Arcsin(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.arcsin(self.operands[0].eval(*args, **kwargs))
+arcsin = lambda x: Arcsin(x)
+
 
 class Arccos(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.arccos(self.operands[0].eval(*args, **kwargs))
+arccos = lambda x: Arccos(x)
+
 
 class Arctan(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.arctan(self.operands[0].eval(*args, **kwargs))
+arctan = lambda x: Arctan(x)
+
 
 class Sqrt(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
         return np.sqrt(self.operands[0].eval(*args, **kwargs))    
-    
+sqrt = lambda x: Sqrt(x)
+
+
 class Abs(Symbol):
     n_operands = 1
     def eval(self, *args, **kwargs):
