@@ -1,0 +1,1 @@
+Obtained through `./script/COVID19_*.ipynb`.

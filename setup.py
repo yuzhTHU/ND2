@@ -22,5 +22,7 @@ setup(
         'setproctitle',
         'pyyaml',
         'IPython',
+        'lxml',
+        'geopandas',
     ]
 )

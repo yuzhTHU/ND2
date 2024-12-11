@@ -1,0 +1,1153 @@
+source,destination,flow
+Anhui,Anhui,43125
+Anhui,Beijing,1492015
+Anhui,Chongqing,1602553
+Anhui,Fujian,1460970
+Anhui,Gansu,568792
+Anhui,Guangdong,4899952
+Anhui,Guangxi,1308685
+Anhui,Guizhou,1075729
+Anhui,Hainan,1473889
+Anhui,Hebei,159011
+Anhui,Heilongjiang,674523
+Anhui,Henan,42283
+Anhui,Hong Kong,24077
+Anhui,Hubei,88813
+Anhui,Hunan,53827
+Anhui,Inner Mongolia,529218
+Anhui,Jiangsu,8109
+Anhui,Jiangxi,57728
+Anhui,Jilin,448508
+Anhui,Liaoning,1315773
+Anhui,Macau,42652
+Anhui,Ningxia,321755
+Anhui,Qinghai,256160
+Anhui,Shaanxi,977861
+Anhui,Shandong,974903
+Anhui,Shanghai,291897
+Anhui,Shanxi,744211
+Anhui,Sichuan,1224918
+Anhui,Taiwan,219166
+Anhui,Tianjin,196525
+Anhui,Tibet,134461
+Anhui,Xinjiang,442634
+Anhui,Yunnan,1896635
+Anhui,Zhejiang,438658
+Beijing,Anhui,1477184
+Beijing,Beijing,1257
+Beijing,Chongqing,6456509
+Beijing,Fujian,4687024
+Beijing,Gansu,2998597
+Beijing,Guangdong,19215232
+Beijing,Guangxi,4239605
+Beijing,Guizhou,3995029
+Beijing,Hainan,8586678
+Beijing,Hebei,939
+Beijing,Heilongjiang,6020062
+Beijing,Henan,895815
+Beijing,Hong Kong,1914411
+Beijing,Hubei,3952444
+Beijing,Hunan,5468701
+Beijing,Inner Mongolia,5961415
+Beijing,Jiangsu,4575923
+Beijing,Jiangxi,5576036
+Beijing,Jilin,3219337
+Beijing,Liaoning,4549864
+Beijing,Macau,529385
+Beijing,Ningxia,2050280
+Beijing,Qinghai,1638856
+Beijing,Shaanxi,5569193
+Beijing,Shandong,4934561
+Beijing,Shanghai,15331322
+Beijing,Shanxi,1454076
+Beijing,Sichuan,9995104
+Beijing,Taiwan,976417
+Beijing,Tianjin,43749
+Beijing,Tibet,387720
+Beijing,Xinjiang,4030417
+Beijing,Yunnan,6204408
+Beijing,Zhejiang,10661168
+Chongqing,Anhui,1610583
+Chongqing,Beijing,6431652
+Chongqing,Chongqing,576774
+Chongqing,Fujian,3217543
+Chongqing,Gansu,616043
+Chongqing,Guangdong,11143025
+Chongqing,Guangxi,2230830
+Chongqing,Guizhou,412962
+Chongqing,Hainan,4354578
+Chongqing,Hebei,1012537
+Chongqing,Heilongjiang,704568
+Chongqing,Henan,2445077
+Chongqing,Hong Kong,180980
+Chongqing,Hubei,1564665
+Chongqing,Hunan,2168451
+Chongqing,Inner Mongolia,736608
+Chongqing,Jiangsu,6524419
+Chongqing,Jiangxi,3047696
+Chongqing,Jilin,510830
+Chongqing,Liaoning,1438502
+Chongqing,Macau,88456
+Chongqing,Ningxia,1037672
+Chongqing,Qinghai,474299
+Chongqing,Shaanxi,1338326
+Chongqing,Shandong,3952531
+Chongqing,Shanghai,7270103
+Chongqing,Shanxi,1397786
+Chongqing,Sichuan,362191
+Chongqing,Taiwan,330822
+Chongqing,Tianjin,1900324
+Chongqing,Tibet,2187764
+Chongqing,Xinjiang,2170765
+Chongqing,Yunnan,5174459
+Chongqing,Zhejiang,7392858
+Fujian,Anhui,1463815
+Fujian,Beijing,4630194
+Fujian,Chongqing,3139732
+Fujian,Fujian,222515
+Fujian,Gansu,619074
+Fujian,Guangdong,2783189
+Fujian,Guangxi,2308862
+Fujian,Guizhou,3105784
+Fujian,Hainan,1599971
+Fujian,Hebei,960397
+Fujian,Heilongjiang,768747
+Fujian,Henan,2918321
+Fujian,Hong Kong,643632
+Fujian,Hubei,2328351
+Fujian,Hunan,2506344
+Fujian,Inner Mongolia,697818
+Fujian,Jiangsu,5424747
+Fujian,Jiangxi,423078
+Fujian,Jilin,499543
+Fujian,Liaoning,1457456
+Fujian,Macau,360054
+Fujian,Ningxia,324801
+Fujian,Qinghai,101830
+Fujian,Shaanxi,2237358
+Fujian,Shandong,3175910
+Fujian,Shanghai,6357663
+Fujian,Shanxi,1190942
+Fujian,Sichuan,2391833
+Fujian,Taiwan,5703852
+Fujian,Tianjin,1599567
+Fujian,Tibet,57173
+Fujian,Xinjiang,340058
+Fujian,Yunnan,2971245
+Fujian,Zhejiang,3517646
+Gansu,Anhui,615856
+Gansu,Beijing,3131113
+Gansu,Chongqing,612123
+Gansu,Fujian,647639
+Gansu,Gansu,4661466
+Gansu,Guangdong,2236483
+Gansu,Guangxi,958057
+Gansu,Guizhou,739506
+Gansu,Hainan,913876
+Gansu,Hebei,453839
+Gansu,Heilongjiang,183211
+Gansu,Henan,854476
+Gansu,Hong Kong,10594
+Gansu,Hubei,973243
+Gansu,Hunan,1159992
+Gansu,Inner Mongolia,458809
+Gansu,Jiangsu,1818521
+Gansu,Jiangxi,986147
+Gansu,Jilin,151623
+Gansu,Liaoning,566838
+Gansu,Macau,4033
+Gansu,Ningxia,325184
+Gansu,Qinghai,206200
+Gansu,Shaanxi,1441877
+Gansu,Shandong,1596106
+Gansu,Shanghai,2531801
+Gansu,Shanxi,256579
+Gansu,Sichuan,1372006
+Gansu,Taiwan,63579
+Gansu,Tianjin,1015232
+Gansu,Tibet,242543
+Gansu,Xinjiang,2325365
+Gansu,Yunnan,1030206
+Gansu,Zhejiang,2030970
+Guangdong,Anhui,4899948
+Guangdong,Beijing,19128676
+Guangdong,Chongqing,11061343
+Guangdong,Fujian,2775286
+Guangdong,Gansu,2078709
+Guangdong,Guangdong,3809433
+Guangdong,Guangxi,1835406
+Guangdong,Guizhou,4530814
+Guangdong,Hainan,9904325
+Guangdong,Hebei,2168192
+Guangdong,Heilongjiang,3334099
+Guangdong,Henan,7817392
+Guangdong,Hong Kong,100417
+Guangdong,Hubei,6895232
+Guangdong,Hunan,3775991
+Guangdong,Inner Mongolia,2197630
+Guangdong,Jiangsu,17525854
+Guangdong,Jiangxi,5834446
+Guangdong,Jilin,2385260
+Guangdong,Liaoning,5516796
+Guangdong,Macau,41402
+Guangdong,Ningxia,1132263
+Guangdong,Qinghai,834956
+Guangdong,Shaanxi,8458175
+Guangdong,Shandong,9015068
+Guangdong,Shanghai,24353273
+Guangdong,Shanxi,3595382
+Guangdong,Sichuan,13625455
+Guangdong,Taiwan,1430676
+Guangdong,Tianjin,4185992
+Guangdong,Tibet,198207
+Guangdong,Xinjiang,1953112
+Guangdong,Yunnan,9629984
+Guangdong,Zhejiang,19582410
+Guangxi,Anhui,1290669
+Guangxi,Beijing,4303538
+Guangxi,Chongqing,2200269
+Guangxi,Fujian,2341406
+Guangxi,Gansu,955437
+Guangxi,Guangdong,1824950
+Guangxi,Guangxi,687527
+Guangxi,Guizhou,704694
+Guangxi,Hainan,2790529
+Guangxi,Hebei,862441
+Guangxi,Heilongjiang,613258
+Guangxi,Henan,2357519
+Guangxi,Hong Kong,97208
+Guangxi,Hubei,1935476
+Guangxi,Hunan,1674633
+Guangxi,Inner Mongolia,283956
+Guangxi,Jiangsu,4047828
+Guangxi,Jiangxi,2384204
+Guangxi,Jilin,356129
+Guangxi,Liaoning,1197461
+Guangxi,Macau,64477
+Guangxi,Ningxia,358694
+Guangxi,Qinghai,93413
+Guangxi,Shaanxi,3993621
+Guangxi,Shandong,2556964
+Guangxi,Shanghai,4618377
+Guangxi,Shanxi,954594
+Guangxi,Sichuan,2541809
+Guangxi,Taiwan,321626
+Guangxi,Tianjin,1181756
+Guangxi,Tibet,46025
+Guangxi,Xinjiang,262284
+Guangxi,Yunnan,1503475
+Guangxi,Zhejiang,4054159
+Guizhou,Anhui,1126838
+Guizhou,Beijing,4090308
+Guizhou,Chongqing,443849
+Guizhou,Fujian,3159252
+Guizhou,Gansu,756007
+Guizhou,Guangdong,4485023
+Guizhou,Guangxi,743682
+Guizhou,Guizhou,3789811
+Guizhou,Hainan,2592155
+Guizhou,Hebei,514991
+Guizhou,Heilongjiang,417642
+Guizhou,Henan,2081332
+Guizhou,Hong Kong,59495
+Guizhou,Hubei,1819246
+Guizhou,Hunan,799769
+Guizhou,Inner Mongolia,402185
+Guizhou,Jiangsu,5174166
+Guizhou,Jiangxi,2697319
+Guizhou,Jilin,190248
+Guizhou,Liaoning,834896
+Guizhou,Macau,46964
+Guizhou,Ningxia,326856
+Guizhou,Qinghai,299033
+Guizhou,Shaanxi,2048899
+Guizhou,Shandong,2447974
+Guizhou,Shanghai,4704904
+Guizhou,Shanxi,912815
+Guizhou,Sichuan,1306955
+Guizhou,Taiwan,126065
+Guizhou,Tianjin,1043256
+Guizhou,Tibet,122117
+Guizhou,Xinjiang,465632
+Guizhou,Yunnan,2217827
+Guizhou,Zhejiang,8036187
+Hainan,Anhui,1460294
+Hainan,Beijing,8718424
+Hainan,Chongqing,4396519
+Hainan,Fujian,1568018
+Hainan,Gansu,853828
+Hainan,Guangdong,9953527
+Hainan,Guangxi,2824346
+Hainan,Guizhou,2601873
+Hainan,Hainan,191
+Hainan,Hebei,1369925
+Hainan,Heilongjiang,2073874
+Hainan,Henan,4529163
+Hainan,Hong Kong,391085
+Hainan,Hubei,3560150
+Hainan,Hunan,4542567
+Hainan,Inner Mongolia,1024604
+Hainan,Jiangsu,4103450
+Hainan,Jiangxi,3424452
+Hainan,Jilin,1120510
+Hainan,Liaoning,1988927
+Hainan,Macau,117403
+Hainan,Ningxia,445861
+Hainan,Qinghai,233556
+Hainan,Shaanxi,3185398
+Hainan,Shandong,2757223
+Hainan,Shanghai,6432793
+Hainan,Shanxi,1836383
+Hainan,Sichuan,3847303
+Hainan,Taiwan,233944
+Hainan,Tianjin,2170967
+Hainan,Tibet,7556
+Hainan,Xinjiang,597752
+Hainan,Yunnan,2047006
+Hainan,Zhejiang,4470344
+Hebei,Anhui,169343
+Hebei,Beijing,2060
+Hebei,Chongqing,1001216
+Hebei,Fujian,1001376
+Hebei,Gansu,462047
+Hebei,Guangdong,2235068
+Hebei,Guangxi,814443
+Hebei,Guizhou,483969
+Hebei,Hainan,1376796
+Hebei,Hebei,1576500
+Hebei,Heilongjiang,729835
+Hebei,Henan,26762
+Hebei,Hong Kong,43954
+Hebei,Hubei,103028
+Hebei,Hunan,146159
+Hebei,Inner Mongolia,1099239
+Hebei,Jiangsu,879198
+Hebei,Jiangxi,451802
+Hebei,Jilin,568834
+Hebei,Liaoning,1335490
+Hebei,Macau,206
+Hebei,Ningxia,373312
+Hebei,Qinghai,80256
+Hebei,Shaanxi,376589
+Hebei,Shandong,200194
+Hebei,Shanghai,2083177
+Hebei,Shanxi,47156
+Hebei,Sichuan,1418646
+Hebei,Taiwan,92845
+Hebei,Tianjin,31194
+Hebei,Tibet,15699
+Hebei,Xinjiang,509851
+Hebei,Yunnan,1136294
+Hebei,Zhejiang,1855727
+Heilongjiang,Anhui,648920
+Heilongjiang,Beijing,5976288
+Heilongjiang,Chongqing,696887
+Heilongjiang,Fujian,775669
+Heilongjiang,Gansu,169885
+Heilongjiang,Guangdong,3479388
+Heilongjiang,Guangxi,607570
+Heilongjiang,Guizhou,392175
+Heilongjiang,Hainan,2079993
+Heilongjiang,Hebei,745993
+Heilongjiang,Heilongjiang,2376127
+Heilongjiang,Henan,1309110
+Heilongjiang,Hong Kong,76689
+Heilongjiang,Hubei,828116
+Heilongjiang,Hunan,1049423
+Heilongjiang,Inner Mongolia,1516032
+Heilongjiang,Jiangsu,3388262
+Heilongjiang,Jiangxi,896987
+Heilongjiang,Jilin,87545
+Heilongjiang,Liaoning,1517910
+Heilongjiang,Macau,10243
+Heilongjiang,Ningxia,386955
+Heilongjiang,Qinghai,89673
+Heilongjiang,Shaanxi,1291748
+Heilongjiang,Shandong,7061168
+Heilongjiang,Shanghai,4397096
+Heilongjiang,Shanxi,756279
+Heilongjiang,Sichuan,1127497
+Heilongjiang,Taiwan,119857
+Heilongjiang,Tianjin,1492863
+Heilongjiang,Tibet,7622
+Heilongjiang,Xinjiang,97498
+Heilongjiang,Yunnan,856476
+Heilongjiang,Zhejiang,2763190
+Henan,Anhui,42755
+Henan,Beijing,849322
+Henan,Chongqing,2476815
+Henan,Fujian,2900674
+Henan,Gansu,890056
+Henan,Guangdong,7891879
+Henan,Guangxi,2345737
+Henan,Guizhou,2107179
+Henan,Hainan,4481154
+Henan,Hebei,32426
+Henan,Heilongjiang,1297609
+Henan,Henan,2
+Henan,Hong Kong,77829
+Henan,Hubei,136154
+Henan,Hunan,244962
+Henan,Inner Mongolia,2272852
+Henan,Jiangsu,527189
+Henan,Jiangxi,1653177
+Henan,Jilin,925336
+Henan,Liaoning,2779941
+Henan,Macau,59327
+Henan,Ningxia,923810
+Henan,Qinghai,877758
+Henan,Shaanxi,109843
+Henan,Shandong,1578571
+Henan,Shanghai,3164515
+Henan,Shanxi,95170
+Henan,Sichuan,2220728
+Henan,Taiwan,225663
+Henan,Tianjin,176992
+Henan,Tibet,348723
+Henan,Xinjiang,4328569
+Henan,Yunnan,4235158
+Henan,Zhejiang,4364654
+Hong Kong,Anhui,23374
+Hong Kong,Beijing,1895744
+Hong Kong,Chongqing,199190
+Hong Kong,Fujian,667586
+Hong Kong,Gansu,10808
+Hong Kong,Guangdong,116410
+Hong Kong,Guangxi,93805
+Hong Kong,Guizhou,66930
+Hong Kong,Hainan,370522
+Hong Kong,Hebei,48924
+Hong Kong,Heilongjiang,67245
+Hong Kong,Henan,79725
+Hong Kong,Hubei,180750
+Hong Kong,Hunan,41485
+Hong Kong,Inner Mongolia,21588
+Hong Kong,Jiangsu,638683
+Hong Kong,Jiangxi,295322
+Hong Kong,Jilin,60026
+Hong Kong,Liaoning,182824
+Hong Kong,Macau,512
+Hong Kong,Ningxia,45885
+Hong Kong,Qinghai,9061
+Hong Kong,Shaanxi,177132
+Hong Kong,Shandong,244666
+Hong Kong,Shanghai,3540667
+Hong Kong,Shanxi,47367
+Hong Kong,Sichuan,448350
+Hong Kong,Taiwan,7572087
+Hong Kong,Tianjin,203463
+Hong Kong,Tibet,4382
+Hong Kong,Xinjiang,16507
+Hong Kong,Yunnan,193446
+Hong Kong,Zhejiang,1006800
+Hubei,Anhui,95731
+Hubei,Beijing,3953212
+Hubei,Chongqing,1542198
+Hubei,Fujian,2316152
+Hubei,Gansu,959315
+Hubei,Guangdong,6942299
+Hubei,Guangxi,1926316
+Hubei,Guizhou,1772036
+Hubei,Hainan,3561210
+Hubei,Hebei,103113
+Hubei,Heilongjiang,842801
+Hubei,Henan,139536
+Hubei,Hong Kong,171012
+Hubei,Hubei,2492120
+Hubei,Hunan,91756
+Hubei,Inner Mongolia,962321
+Hubei,Jiangsu,810860
+Hubei,Jiangxi,984743
+Hubei,Jilin,616488
+Hubei,Liaoning,2286704
+Hubei,Macau,130935
+Hubei,Ningxia,672412
+Hubei,Qinghai,466507
+Hubei,Shaanxi,1227440
+Hubei,Shandong,2933305
+Hubei,Shanghai,3885247
+Hubei,Shanxi,1104777
+Hubei,Sichuan,2384164
+Hubei,Taiwan,252461
+Hubei,Tianjin,1116928
+Hubei,Tibet,122134
+Hubei,Xinjiang,1125407
+Hubei,Yunnan,3504625
+Hubei,Zhejiang,4064039
+Hunan,Anhui,52854
+Hunan,Beijing,5383882
+Hunan,Chongqing,2124394
+Hunan,Fujian,2524009
+Hunan,Gansu,1110459
+Hunan,Guangdong,3704944
+Hunan,Guangxi,1674003
+Hunan,Guizhou,843401
+Hunan,Hainan,4555717
+Hunan,Hebei,157145
+Hunan,Heilongjiang,1044909
+Hunan,Henan,243468
+Hunan,Hong Kong,50912
+Hunan,Hubei,96602
+Hunan,Hunan,1029213
+Hunan,Inner Mongolia,890447
+Hunan,Jiangsu,3971533
+Hunan,Jiangxi,1069368
+Hunan,Jilin,648107
+Hunan,Liaoning,1644594
+Hunan,Macau,18623
+Hunan,Ningxia,723482
+Hunan,Qinghai,613521
+Hunan,Shaanxi,2641002
+Hunan,Shandong,3649131
+Hunan,Shanghai,4617272
+Hunan,Shanxi,1471559
+Hunan,Sichuan,2562339
+Hunan,Taiwan,320613
+Hunan,Tianjin,1722140
+Hunan,Tibet,136553
+Hunan,Xinjiang,1060849
+Hunan,Yunnan,4157995
+Hunan,Zhejiang,3298304
+Inner Mongolia,Anhui,523241
+Inner Mongolia,Beijing,5909622
+Inner Mongolia,Chongqing,723500
+Inner Mongolia,Fujian,621994
+Inner Mongolia,Gansu,495450
+Inner Mongolia,Guangdong,2042262
+Inner Mongolia,Guangxi,273533
+Inner Mongolia,Guizhou,426482
+Inner Mongolia,Hainan,1060533
+Inner Mongolia,Hebei,1108766
+Inner Mongolia,Heilongjiang,1494886
+Inner Mongolia,Henan,2315839
+Inner Mongolia,Hong Kong,20917
+Inner Mongolia,Hubei,993711
+Inner Mongolia,Hunan,898359
+Inner Mongolia,Inner Mongolia,15814719
+Inner Mongolia,Jiangsu,1694235
+Inner Mongolia,Jiangxi,601761
+Inner Mongolia,Jilin,391125
+Inner Mongolia,Liaoning,1705621
+Inner Mongolia,Macau,2316
+Inner Mongolia,Ningxia,305936
+Inner Mongolia,Qinghai,186049
+Inner Mongolia,Shaanxi,2292019
+Inner Mongolia,Shandong,2047526
+Inner Mongolia,Shanghai,2449362
+Inner Mongolia,Shanxi,1058161
+Inner Mongolia,Sichuan,823243
+Inner Mongolia,Taiwan,63784
+Inner Mongolia,Tianjin,1437552
+Inner Mongolia,Tibet,13927
+Inner Mongolia,Xinjiang,290666
+Inner Mongolia,Yunnan,599081
+Inner Mongolia,Zhejiang,1773875
+Jiangsu,Anhui,8957
+Jiangsu,Beijing,4521217
+Jiangsu,Chongqing,6530790
+Jiangsu,Fujian,5394388
+Jiangsu,Gansu,1730631
+Jiangsu,Guangdong,17501069
+Jiangsu,Guangxi,4070022
+Jiangsu,Guizhou,5080648
+Jiangsu,Hainan,4088993
+Jiangsu,Hebei,864309
+Jiangsu,Heilongjiang,3425182
+Jiangsu,Henan,524144
+Jiangsu,Hong Kong,623667
+Jiangsu,Hubei,812079
+Jiangsu,Hunan,3998105
+Jiangsu,Inner Mongolia,1672307
+Jiangsu,Jiangsu,274562
+Jiangsu,Jiangxi,3287832
+Jiangsu,Jilin,2645055
+Jiangsu,Liaoning,6674204
+Jiangsu,Macau,524228
+Jiangsu,Ningxia,1170601
+Jiangsu,Qinghai,687363
+Jiangsu,Shaanxi,4672416
+Jiangsu,Shandong,2934067
+Jiangsu,Shanghai,450813
+Jiangsu,Shanxi,2665891
+Jiangsu,Sichuan,6050215
+Jiangsu,Taiwan,1018489
+Jiangsu,Tianjin,596733
+Jiangsu,Tibet,92392
+Jiangsu,Xinjiang,1332334
+Jiangsu,Yunnan,6301069
+Jiangsu,Zhejiang,862678
+Jiangxi,Anhui,56208
+Jiangxi,Beijing,5540543
+Jiangxi,Chongqing,3028647
+Jiangxi,Fujian,441073
+Jiangxi,Gansu,928352
+Jiangxi,Guangdong,5757143
+Jiangxi,Guangxi,2385884
+Jiangxi,Guizhou,2674781
+Jiangxi,Hainan,3443922
+Jiangxi,Hebei,447875
+Jiangxi,Heilongjiang,916486
+Jiangxi,Henan,1638938
+Jiangxi,Hong Kong,275453
+Jiangxi,Hubei,987313
+Jiangxi,Hunan,1038241
+Jiangxi,Inner Mongolia,619786
+Jiangxi,Jiangsu,3225937
+Jiangxi,Jiangxi,515105
+Jiangxi,Jilin,637584
+Jiangxi,Liaoning,1622418
+Jiangxi,Macau,120769
+Jiangxi,Ningxia,535129
+Jiangxi,Qinghai,70271
+Jiangxi,Shaanxi,2608953
+Jiangxi,Shandong,3258945
+Jiangxi,Shanghai,3261953
+Jiangxi,Shanxi,1345771
+Jiangxi,Sichuan,2484052
+Jiangxi,Taiwan,534676
+Jiangxi,Tianjin,1289869
+Jiangxi,Tibet,92665
+Jiangxi,Xinjiang,501901
+Jiangxi,Yunnan,3473498
+Jiangxi,Zhejiang,1292317
+Jilin,Anhui,452883
+Jilin,Beijing,2979389
+Jilin,Chongqing,512640
+Jilin,Fujian,478550
+Jilin,Gansu,141230
+Jilin,Guangdong,2413732
+Jilin,Guangxi,361539
+Jilin,Guizhou,180009
+Jilin,Hainan,1111568
+Jilin,Hebei,546476
+Jilin,Heilongjiang,85505
+Jilin,Henan,922061
+Jilin,Hong Kong,76072
+Jilin,Hubei,603875
+Jilin,Hunan,676421
+Jilin,Inner Mongolia,428962
+Jilin,Jiangsu,2670182
+Jilin,Jiangxi,638321
+Jilin,Jilin,445160
+Jilin,Liaoning,487486
+Jilin,Macau,8461
+Jilin,Ningxia,185779
+Jilin,Qinghai,54867
+Jilin,Shaanxi,870738
+Jilin,Shandong,4460354
+Jilin,Shanghai,3783445
+Jilin,Shanxi,448655
+Jilin,Sichuan,791939
+Jilin,Taiwan,96344
+Jilin,Tianjin,991914
+Jilin,Tibet,1305
+Jilin,Xinjiang,147719
+Jilin,Yunnan,436880
+Jilin,Zhejiang,2288041
+Liaoning,Anhui,1365052
+Liaoning,Beijing,4393836
+Liaoning,Chongqing,1477691
+Liaoning,Fujian,1457915
+Liaoning,Gansu,568746
+Liaoning,Guangdong,5513846
+Liaoning,Guangxi,1202523
+Liaoning,Guizhou,916290
+Liaoning,Hainan,2007262
+Liaoning,Hebei,1301026
+Liaoning,Heilongjiang,1541747
+Liaoning,Henan,2753299
+Liaoning,Hong Kong,182334
+Liaoning,Hubei,2269659
+Liaoning,Hunan,1585345
+Liaoning,Inner Mongolia,1699129
+Liaoning,Jiangsu,6707756
+Liaoning,Jiangxi,1656760
+Liaoning,Jilin,468873
+Liaoning,Liaoning,83941
+Liaoning,Macau,19936
+Liaoning,Ningxia,415411
+Liaoning,Qinghai,185805
+Liaoning,Shaanxi,2786859
+Liaoning,Shandong,7608252
+Liaoning,Shanghai,7813285
+Liaoning,Shanxi,1710930
+Liaoning,Sichuan,2200115
+Liaoning,Taiwan,278623
+Liaoning,Tianjin,926923
+Liaoning,Tibet,32239
+Liaoning,Xinjiang,444286
+Liaoning,Yunnan,1352588
+Liaoning,Zhejiang,4760198
+Macau,Anhui,40584
+Macau,Beijing,506660
+Macau,Chongqing,92932
+Macau,Fujian,357479
+Macau,Gansu,1435
+Macau,Guangdong,88995
+Macau,Guangxi,68749
+Macau,Guizhou,41468
+Macau,Hainan,116572
+Macau,Hebei,2074
+Macau,Heilongjiang,16079
+Macau,Henan,65342
+Macau,Hong Kong,422
+Macau,Hubei,131833
+Macau,Hunan,18801
+Macau,Inner Mongolia,1588
+Macau,Jiangsu,529945
+Macau,Jiangxi,115732
+Macau,Jilin,7230
+Macau,Liaoning,17376
+Macau,Ningxia,1459
+Macau,Qinghai,472
+Macau,Shaanxi,103418
+Macau,Shandong,81344
+Macau,Shanghai,1350639
+Macau,Shanxi,87284
+Macau,Sichuan,126282
+Macau,Taiwan,1899589
+Macau,Tianjin,93875
+Macau,Tibet,486
+Macau,Xinjiang,1137
+Macau,Yunnan,28774
+Macau,Zhejiang,842778
+Ningxia,Anhui,358863
+Ningxia,Beijing,2052547
+Ningxia,Chongqing,954639
+Ningxia,Fujian,312828
+Ningxia,Gansu,309999
+Ningxia,Guangdong,1165431
+Ningxia,Guangxi,357961
+Ningxia,Guizhou,337542
+Ningxia,Hainan,477621
+Ningxia,Hebei,381388
+Ningxia,Heilongjiang,410563
+Ningxia,Henan,916751
+Ningxia,Hong Kong,48715
+Ningxia,Hubei,672333
+Ningxia,Hunan,727902
+Ningxia,Inner Mongolia,248646
+Ningxia,Jiangsu,1176999
+Ningxia,Jiangxi,525316
+Ningxia,Jilin,171631
+Ningxia,Liaoning,409321
+Ningxia,Macau,2488
+Ningxia,Ningxia,441671
+Ningxia,Qinghai,201230
+Ningxia,Shaanxi,2158138
+Ningxia,Shandong,1041228
+Ningxia,Shanghai,1505628
+Ningxia,Shanxi,362646
+Ningxia,Sichuan,847567
+Ningxia,Taiwan,39055
+Ningxia,Tianjin,460676
+Ningxia,Tibet,48804
+Ningxia,Xinjiang,937063
+Ningxia,Yunnan,608100
+Ningxia,Zhejiang,918701
+Qinghai,Anhui,250452
+Qinghai,Beijing,1671457
+Qinghai,Chongqing,474186
+Qinghai,Fujian,93358
+Qinghai,Gansu,193262
+Qinghai,Guangdong,866320
+Qinghai,Guangxi,99887
+Qinghai,Guizhou,248781
+Qinghai,Hainan,209933
+Qinghai,Hebei,76523
+Qinghai,Heilongjiang,92025
+Qinghai,Henan,909174
+Qinghai,Hong Kong,7299
+Qinghai,Hubei,472538
+Qinghai,Hunan,633035
+Qinghai,Inner Mongolia,227898
+Qinghai,Jiangsu,688160
+Qinghai,Jiangxi,73122
+Qinghai,Jilin,47727
+Qinghai,Liaoning,175078
+Qinghai,Macau,2745
+Qinghai,Ningxia,212303
+Qinghai,Qinghai,2836276
+Qinghai,Shaanxi,1901465
+Qinghai,Shandong,616699
+Qinghai,Shanghai,921523
+Qinghai,Shanxi,218819
+Qinghai,Sichuan,906889
+Qinghai,Taiwan,6015
+Qinghai,Tianjin,337092
+Qinghai,Tibet,699289
+Qinghai,Xinjiang,532250
+Qinghai,Yunnan,338636
+Qinghai,Zhejiang,721738
+Shaanxi,Anhui,966417
+Shaanxi,Beijing,5582623
+Shaanxi,Chongqing,1331574
+Shaanxi,Fujian,2258610
+Shaanxi,Gansu,1453306
+Shaanxi,Guangdong,8539064
+Shaanxi,Guangxi,3992298
+Shaanxi,Guizhou,2096004
+Shaanxi,Hainan,3186176
+Shaanxi,Hebei,398008
+Shaanxi,Heilongjiang,1286545
+Shaanxi,Henan,104500
+Shaanxi,Hong Kong,173772
+Shaanxi,Hubei,1253190
+Shaanxi,Hunan,2613371
+Shaanxi,Inner Mongolia,2344875
+Shaanxi,Jiangsu,4687083
+Shaanxi,Jiangxi,2673471
+Shaanxi,Jilin,846346
+Shaanxi,Liaoning,2779940
+Shaanxi,Macau,101058
+Shaanxi,Ningxia,2133315
+Shaanxi,Qinghai,1886233
+Shaanxi,Shaanxi,594627
+Shaanxi,Shandong,4350287
+Shaanxi,Shanghai,6026176
+Shaanxi,Shanxi,102590
+Shaanxi,Sichuan,1236722
+Shaanxi,Taiwan,189950
+Shaanxi,Tianjin,1712736
+Shaanxi,Tibet,2037026
+Shaanxi,Xinjiang,5064105
+Shaanxi,Yunnan,3738160
+Shaanxi,Zhejiang,5992252
+Shandong,Anhui,1003906
+Shandong,Beijing,4805509
+Shandong,Chongqing,3921847
+Shandong,Fujian,3170731
+Shandong,Gansu,1559292
+Shandong,Guangdong,9111525
+Shandong,Guangxi,2526131
+Shandong,Guizhou,2440834
+Shandong,Hainan,2780084
+Shandong,Hebei,201886
+Shandong,Heilongjiang,7128669
+Shandong,Henan,1600435
+Shandong,Hong Kong,229769
+Shandong,Hubei,2944554
+Shandong,Hunan,3675959
+Shandong,Inner Mongolia,2034499
+Shandong,Jiangsu,2947621
+Shandong,Jiangxi,3310339
+Shandong,Jilin,4497547
+Shandong,Liaoning,7706865
+Shandong,Macau,83977
+Shandong,Ningxia,1119249
+Shandong,Qinghai,589678
+Shandong,Shaanxi,4311007
+Shandong,Shandong,860111
+Shandong,Shanghai,9231096
+Shandong,Shanxi,1342890
+Shandong,Sichuan,4001686
+Shandong,Taiwan,416478
+Shandong,Tianjin,591841
+Shandong,Tibet,92526
+Shandong,Xinjiang,1486488
+Shandong,Yunnan,3711028
+Shandong,Zhejiang,6447865
+Shanghai,Anhui,310471
+Shanghai,Beijing,15295275
+Shanghai,Chongqing,7145187
+Shanghai,Fujian,6172874
+Shanghai,Gansu,2387455
+Shanghai,Guangdong,24271971
+Shanghai,Guangxi,4633941
+Shanghai,Guizhou,4734992
+Shanghai,Hainan,6337389
+Shanghai,Hebei,2043193
+Shanghai,Heilongjiang,4319624
+Shanghai,Henan,3211442
+Shanghai,Hong Kong,3520880
+Shanghai,Hubei,3883742
+Shanghai,Hunan,4531430
+Shanghai,Inner Mongolia,2494485
+Shanghai,Jiangsu,469098
+Shanghai,Jiangxi,3249716
+Shanghai,Jilin,3723405
+Shanghai,Liaoning,7820497
+Shanghai,Macau,1364032
+Shanghai,Ningxia,1539783
+Shanghai,Qinghai,926108
+Shanghai,Shaanxi,6098568
+Shanghai,Shandong,9213136
+Shanghai,Shanxi,3480464
+Shanghai,Sichuan,8903183
+Shanghai,Taiwan,3598760
+Shanghai,Tianjin,2967720
+Shanghai,Tibet,99361
+Shanghai,Xinjiang,2487252
+Shanghai,Yunnan,6373281
+Shanghai,Zhejiang,625048
+Shanxi,Anhui,751347
+Shanxi,Beijing,1448846
+Shanxi,Chongqing,1361434
+Shanxi,Fujian,1159607
+Shanxi,Gansu,268998
+Shanxi,Guangdong,3633091
+Shanxi,Guangxi,931582
+Shanxi,Guizhou,890418
+Shanxi,Hainan,1825750
+Shanxi,Hebei,41627
+Shanxi,Heilongjiang,707799
+Shanxi,Henan,101110
+Shanxi,Hong Kong,45976
+Shanxi,Hubei,1088594
+Shanxi,Hunan,1517404
+Shanxi,Inner Mongolia,1097903
+Shanxi,Jiangsu,2672849
+Shanxi,Jiangxi,1348501
+Shanxi,Jilin,434444
+Shanxi,Liaoning,1702879
+Shanxi,Macau,93110
+Shanxi,Ningxia,383271
+Shanxi,Qinghai,223241
+Shanxi,Shaanxi,109333
+Shanxi,Shandong,1328815
+Shanxi,Shanghai,3489092
+Shanxi,Shanxi,637834
+Shanxi,Sichuan,1107308
+Shanxi,Taiwan,100513
+Shanxi,Tianjin,718221
+Shanxi,Tibet,33354
+Shanxi,Xinjiang,606358
+Shanxi,Yunnan,1684681
+Shanxi,Zhejiang,3034749
+Sichuan,Anhui,1250664
+Sichuan,Beijing,9938764
+Sichuan,Chongqing,360519
+Sichuan,Fujian,2423262
+Sichuan,Gansu,1350094
+Sichuan,Guangdong,13603747
+Sichuan,Guangxi,2540396
+Sichuan,Guizhou,1311726
+Sichuan,Hainan,3811414
+Sichuan,Hebei,1434132
+Sichuan,Heilongjiang,1082818
+Sichuan,Henan,2244196
+Sichuan,Hong Kong,435186
+Sichuan,Hubei,2404586
+Sichuan,Hunan,2551859
+Sichuan,Inner Mongolia,832341
+Sichuan,Jiangsu,6099474
+Sichuan,Jiangxi,2519758
+Sichuan,Jilin,768790
+Sichuan,Liaoning,2171796
+Sichuan,Macau,130286
+Sichuan,Ningxia,873477
+Sichuan,Qinghai,966734
+Sichuan,Shaanxi,1241795
+Sichuan,Shandong,3965022
+Sichuan,Shanghai,9002559
+Sichuan,Shanxi,1046074
+Sichuan,Sichuan,3221733
+Sichuan,Taiwan,375601
+Sichuan,Tianjin,1979255
+Sichuan,Tibet,4379414
+Sichuan,Xinjiang,3017538
+Sichuan,Yunnan,7543210
+Sichuan,Zhejiang,6891866
+Taiwan,Anhui,209248
+Taiwan,Beijing,1029601
+Taiwan,Chongqing,336952
+Taiwan,Fujian,5786934
+Taiwan,Gansu,62712
+Taiwan,Guangdong,1414746
+Taiwan,Guangxi,313963
+Taiwan,Guizhou,125618
+Taiwan,Hainan,241750
+Taiwan,Hebei,92513
+Taiwan,Heilongjiang,125131
+Taiwan,Henan,227925
+Taiwan,Hong Kong,7629789
+Taiwan,Hubei,272786
+Taiwan,Hunan,328558
+Taiwan,Inner Mongolia,67990
+Taiwan,Jiangsu,1015162
+Taiwan,Jiangxi,542595
+Taiwan,Jilin,100110
+Taiwan,Liaoning,279034
+Taiwan,Macau,1894605
+Taiwan,Ningxia,38733
+Taiwan,Qinghai,10016
+Taiwan,Shaanxi,188556
+Taiwan,Shandong,426175
+Taiwan,Shanghai,3739844
+Taiwan,Shanxi,110566
+Taiwan,Sichuan,400316
+Taiwan,Taiwan,12175617
+Taiwan,Tianjin,170076
+Taiwan,Tibet,8141
+Taiwan,Xinjiang,46950
+Taiwan,Yunnan,244966
+Taiwan,Zhejiang,907093
+Tianjin,Anhui,199424
+Tianjin,Beijing,11714
+Tianjin,Chongqing,1893361
+Tianjin,Fujian,1613133
+Tianjin,Gansu,1037318
+Tianjin,Guangdong,4199772
+Tianjin,Guangxi,1199246
+Tianjin,Guizhou,1015516
+Tianjin,Hainan,2146796
+Tianjin,Hebei,30079
+Tianjin,Heilongjiang,1496664
+Tianjin,Henan,175970
+Tianjin,Hong Kong,194071
+Tianjin,Hubei,1146708
+Tianjin,Hunan,1716826
+Tianjin,Inner Mongolia,1466332
+Tianjin,Jiangsu,601266
+Tianjin,Jiangxi,1317916
+Tianjin,Jilin,996003
+Tianjin,Liaoning,957020
+Tianjin,Macau,94864
+Tianjin,Ningxia,458973
+Tianjin,Qinghai,360423
+Tianjin,Shaanxi,1723043
+Tianjin,Shandong,604402
+Tianjin,Shanghai,2915868
+Tianjin,Shanxi,707063
+Tianjin,Sichuan,2015297
+Tianjin,Taiwan,181468
+Tianjin,Tibet,13017
+Tianjin,Xinjiang,792376
+Tianjin,Yunnan,1667321
+Tianjin,Zhejiang,2209536
+Tibet,Anhui,168912
+Tibet,Beijing,475072
+Tibet,Chongqing,2167570
+Tibet,Fujian,36575
+Tibet,Gansu,237589
+Tibet,Guangdong,307850
+Tibet,Guangxi,58349
+Tibet,Guizhou,149749
+Tibet,Hainan,27845
+Tibet,Hebei,39181
+Tibet,Heilongjiang,15768
+Tibet,Henan,348566
+Tibet,Hong Kong,8390
+Tibet,Hubei,147815
+Tibet,Hunan,206225
+Tibet,Inner Mongolia,47336
+Tibet,Jiangsu,179153
+Tibet,Jiangxi,86618
+Tibet,Jilin,2855
+Tibet,Liaoning,27743
+Tibet,Macau,1762
+Tibet,Ningxia,44295
+Tibet,Qinghai,686713
+Tibet,Shaanxi,1972969
+Tibet,Shandong,103485
+Tibet,Shanghai,180624
+Tibet,Shanxi,43765
+Tibet,Sichuan,4224721
+Tibet,Taiwan,3067
+Tibet,Tianjin,42269
+Tibet,Tibet,709879
+Tibet,Xinjiang,62832
+Tibet,Yunnan,529293
+Tibet,Zhejiang,212993
+Xinjiang,Anhui,413568
+Xinjiang,Beijing,4023320
+Xinjiang,Chongqing,2126158
+Xinjiang,Fujian,319921
+Xinjiang,Gansu,2519883
+Xinjiang,Guangdong,1992931
+Xinjiang,Guangxi,204029
+Xinjiang,Guizhou,487641
+Xinjiang,Hainan,600644
+Xinjiang,Hebei,506650
+Xinjiang,Heilongjiang,98341
+Xinjiang,Henan,4423002
+Xinjiang,Hong Kong,23113
+Xinjiang,Hubei,1124761
+Xinjiang,Hunan,1069519
+Xinjiang,Inner Mongolia,326817
+Xinjiang,Jiangsu,1436209
+Xinjiang,Jiangxi,404536
+Xinjiang,Jilin,147919
+Xinjiang,Liaoning,434956
+Xinjiang,Macau,2211
+Xinjiang,Ningxia,940718
+Xinjiang,Qinghai,557430
+Xinjiang,Shaanxi,5410811
+Xinjiang,Shandong,1461594
+Xinjiang,Shanghai,2393098
+Xinjiang,Shanxi,619757
+Xinjiang,Sichuan,2976407
+Xinjiang,Taiwan,44159
+Xinjiang,Tianjin,809824
+Xinjiang,Tibet,57176
+Xinjiang,Xinjiang,30616823
+Xinjiang,Yunnan,423517
+Xinjiang,Zhejiang,1553223
+Yunnan,Anhui,1853621
+Yunnan,Beijing,6210169
+Yunnan,Chongqing,5141503
+Yunnan,Fujian,2933262
+Yunnan,Gansu,1044005
+Yunnan,Guangdong,9594005
+Yunnan,Guangxi,1513957
+Yunnan,Guizhou,2230382
+Yunnan,Hainan,2040568
+Yunnan,Hebei,1113729
+Yunnan,Heilongjiang,826791
+Yunnan,Henan,4276051
+Yunnan,Hong Kong,182157
+Yunnan,Hubei,3566670
+Yunnan,Hunan,4253775
+Yunnan,Inner Mongolia,639813
+Yunnan,Jiangsu,6453520
+Yunnan,Jiangxi,3482339
+Yunnan,Jilin,431870
+Yunnan,Liaoning,1367537
+Yunnan,Macau,31499
+Yunnan,Ningxia,621609
+Yunnan,Qinghai,334382
+Yunnan,Shaanxi,3782246
+Yunnan,Shandong,3664281
+Yunnan,Shanghai,6531413
+Yunnan,Shanxi,1723954
+Yunnan,Sichuan,7476031
+Yunnan,Taiwan,239238
+Yunnan,Tianjin,1671637
+Yunnan,Tibet,538952
+Yunnan,Xinjiang,443133
+Yunnan,Yunnan,35017507
+Yunnan,Zhejiang,6972463
+Zhejiang,Anhui,426361
+Zhejiang,Beijing,10616787
+Zhejiang,Chongqing,7385109
+Zhejiang,Fujian,3441425
+Zhejiang,Gansu,1853068
+Zhejiang,Guangdong,19576641
+Zhejiang,Guangxi,4030077
+Zhejiang,Guizhou,8328755
+Zhejiang,Hainan,4460344
+Zhejiang,Hebei,1832279
+Zhejiang,Heilongjiang,2662514
+Zhejiang,Henan,4350936
+Zhejiang,Hong Kong,1021053
+Zhejiang,Hubei,4132779
+Zhejiang,Hunan,3327624
+Zhejiang,Inner Mongolia,1781738
+Zhejiang,Jiangsu,923399
+Zhejiang,Jiangxi,1265396
+Zhejiang,Jilin,2224789
+Zhejiang,Liaoning,4765479
+Zhejiang,Macau,880129
+Zhejiang,Ningxia,943425
+Zhejiang,Qinghai,749503
+Zhejiang,Shaanxi,5994521
+Zhejiang,Shandong,6437537
+Zhejiang,Shanghai,609752
+Zhejiang,Shanxi,2974939
+Zhejiang,Sichuan,6951391
+Zhejiang,Taiwan,914957
+Zhejiang,Tianjin,2190512
+Zhejiang,Tibet,119229
+Zhejiang,Xinjiang,1623827
+Zhejiang,Yunnan,6851006
+Zhejiang,Zhejiang,195457
