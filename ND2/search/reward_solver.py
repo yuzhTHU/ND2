@@ -85,11 +85,8 @@ class RewardSolver(object):
         def loss(params):
             coef_dict = params2coefdict(params)
             prefix_with_coef = deepcopy(prefix)
-            cnt = {'<C>': 0, '<Cv>': 0, '<Ce>': 0}
-            for i, token in enumerate(prefix_with_coef):
-                if token in coef_dict:
-                    prefix_with_coef[i] = coef_dict[token][cnt[token]]
-                    cnt[token] += 1
+            tmp = {k: list(v) for k, v in coef_dict.items()}
+            prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix_with_coef]
 
             pred = GDExpr.eval(prefix_with_coef, var_dict, [], strict=False)
             true = Y
@@ -145,14 +142,11 @@ class RewardSolver(object):
             - ACC4: float, the accuracy of the prediction (1e-4)
         """
 
-        prefix = deepcopy(prefix)
-        cnt = {'<C>': 0, '<Cv>': 0, '<Ce>': 0}
-        for i, token in enumerate(prefix):
-            if token in coef_dict:
-                prefix[i] = coef_dict[token][cnt[token]]
-                cnt[token] += 1
+        prefix_with_coef = deepcopy(prefix)
+        tmp = {k: list(v) for k, v in coef_dict.items()}
+        prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix_with_coef]
 
-        pred = GDExpr.eval(prefix, self.var_dict, [], strict=False)
+        pred = GDExpr.eval(prefix_with_coef, self.var_dict, [], strict=False)
         true = self.Y
         residual = (pred - true)
         # result = dict(pred=pred, true=true, mask=self.mask)

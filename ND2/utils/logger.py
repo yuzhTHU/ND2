@@ -48,10 +48,11 @@ def init_logger(exp_name, log_file=None, quiet=False, root_name='ND2', info_leve
     与这里设置的 logger 具有相同的 Handler 和 Formatter
     """
     start_time = time.time()
-    logging.addLevelName(30, "NOTE")  # 和 logging.WARNING 一样的级别
+    logging.addLevelName(25, "NOTE")  # 介于 logging.INFO 和 logging.WARNING 中间的级别
     def note(self, message, *args, **kwargs):
-        if self.isEnabledFor(30): self._log(30, message, args, **kwargs)
+        if self.isEnabledFor(25): self._log(25, message, args, **kwargs)
     logging.Logger.note = note
+    logging.NOTE = 25
 
     logger = logging.getLogger(root_name)
     logger.setLevel(logging.DEBUG)

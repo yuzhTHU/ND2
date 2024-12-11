@@ -24,7 +24,7 @@ class Aggr(Function):
     def _sympystr(self, printer):
         m = self.args[0]
         _m = printer._print(m)
-        return 'aggr({})'.format(_m)
+        return '\033[0;33maggr\033[0m({})'.format(_m)
     
     def _eval_expand_multinomial(self, **hints):
         m = self.args[0]
@@ -62,7 +62,7 @@ class Sour(Function):
     def _sympystr(self, printer):
         m = self.args[0]
         _m = printer._print(m)
-        return 'sour({})'.format(_m)  
+        return '\033[0;33msour\033[0m({})'.format(_m)  
     
     def _eval_expand_multinomial(self, **hints):
         m = self.args[0]
@@ -100,7 +100,7 @@ class Targ(Function):
     def _sympystr(self, printer):
         m = self.args[0]
         _m = printer._print(m)
-        return 'targ({})'.format(_m)  
+        return '\033[0;33mtarg\033[0m({})'.format(_m)  
     
     def _eval_expand_multinomial(self, **hints):
         m = self.args[0]
@@ -138,7 +138,7 @@ class Rgga(Function):
     def _sympystr(self, printer):
         m = self.args[0]
         _m = printer._print(m)
-        return 'rgga({})'.format(_m)
+        return '\033[0;33mrgga\033[0m({})'.format(_m)
     
     def _eval_expand_multinomial(self, **hints):
         m = self.args[0]

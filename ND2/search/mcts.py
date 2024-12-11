@@ -470,24 +470,43 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             fig.savefig(save_path)
 
-    def Pareto(self, drop_non_pareto=True):
-        """ 计算 R2 关于 Complexity 的 Pareto 前沿 """
-        tmp = []
-        for prefix, reward in tqdm(self.rewards.items()):
-            if reward <= 0: continue
+    def Pareto(self, 
+               topk=20,
+               max_iter=100,
+               accuracy_metric=lambda metric: metric['R2'],
+               print_on_fly=True
+               ):
+        """ Calculate Pareto Front """
+        logger.note('Calculating Pareto Front... This may take a while.')
+        results = defaultdict(list)
+        for prefix, reward in self.rewards.items():
+            if not np.isfinite(reward) or reward <= 0: continue
+            if len(prefix) > self.max_token_num: continue
+            if prefix.count('<C>') > self.max_coeff_num: continue
             complex = len(prefix)
-            formula = GDExpr.prefix2str(list(prefix))
-            # r_MSE = self.rewarder.config.complexity_base ** len(prefix) / reward - 1
-            # R2 = 1 - r_MSE
-            # RMSE = np.sqrt(r_MSE * self.var_dict['out'].var())
-            R2 = self.rewarder.reward2R2(reward, prefix, self.var_dict)
-            RMSE = self.rewarder.reward2RMSE(reward, prefix, self.var_dict)
-            tmp.append([formula, complex, R2, RMSE, reward])
-        
-        df = pd.DataFrame(tmp, columns=['Formula', 'Complexity', 'R2', 'RMSE', 'Reward'])
-        df = df.sort_values('R2', ascending=False).groupby('Complexity').head(1)
-        df = df.sort_values('Complexity')
-        while not (np.diff(df['R2'], prepend=0) > 0).all() and drop_non_pareto:
-            df = df[np.diff(df['R2'], prepend=0) > 0]
-        df.reset_index(drop=True, inplace=True)
-        return df
+            results[complex].append((prefix, reward))
+        # select topk among each complexity
+        for complex, items in results.items():
+            results[complex] = sorted(items, key=lambda x: x[1], reverse=True)[:topk]
+        # sort by complex
+        results = dict(sorted(results.items(), key=lambda x: x[0]))
+
+        pareto = []
+        cur_best_accuracy = -np.inf
+        for complex, items in tqdm(results.items(), leave=False, dynamic_ncols=True, disable=print_on_fly):
+            for idx, (prefix, reward) in enumerate(items):
+                reward, coef_dict = self.rewarder.solve(list(prefix), sample=False, max_iter=max_iter)
+                metrics = self.rewarder.evaluate(list(prefix), coef_dict)
+                accuracy = accuracy_metric(metrics)
+                tmp = {k: list(v) for k, v in coef_dict.items()}
+                prefix_with_emb = [tmp[token].pop(0) if token in tmp else token for token in prefix]
+                results[complex][idx] = (prefix_with_emb, accuracy)
+            prefix_with_emb, accuracy = max(results[complex], key=lambda x: x[1])
+            if accuracy > cur_best_accuracy:
+                pareto.append((prefix_with_emb, complex, accuracy))
+                cur_best_accuracy = accuracy
+                if print_on_fly: logger.note(f'Complex={complex:<5} Accuracy={accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_emb)}')
+            else:
+                if print_on_fly: logger.debug(f'Complex={complex:<5} Accuracy={cur_best_accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_emb)}')
+
+        return pareto

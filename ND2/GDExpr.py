@@ -606,6 +606,7 @@ class GDExprClass:
         if len(prefix) == 0: raise ValueError('Empty prefix')
         item, prefix = prefix[0], prefix[1:]
 
+        if isinstance(item, np.ndarray): return item, prefix, coeff_count
         if item in self.operator.unary:
             val1, prefix, coeff_count = self._eval(prefix, var_dict, coef_list, coeff_count, **kwargs)
         if item in self.operator.binary:
@@ -713,7 +714,7 @@ class GDExprClass:
         """
         val, _prefix, _coeff_count = self._eval(prefix, var_dict, coef_list, **kwargs)
         assert len(_prefix) == 0, f'{prefix} -> {_prefix}'
-        assert _coeff_count == (prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')), f'{_coeff_count} != ({prefix.count("<C>")}, {prefix.count("<Cv>")}, {prefix.count("<Ce>")})'
+        # assert _coeff_count == (prefix.count('<C>'), prefix.count('<Cv>'), prefix.count('<Ce>')), f'{_coeff_count} != ({prefix.count("<C>")}, {prefix.count("<Cv>")}, {prefix.count("<Ce>")})'
         return val
     
     def is_terminal(self, prefix:List[str]):
@@ -1153,6 +1154,8 @@ class GDExprClass:
         if len(prefix) == 0: raise ValueError('Empty prefix')
         item, prefix = prefix[0], prefix[1:]
         
+        if isinstance(item, np.ndarray): return f'\033[0;36m<{np.mean(item):.2f}+-{np.std(item):.2f} ({len(item.reshape(-1))})>\033[0m', prefix
+        
         if item in self.operator.unary:
             arg1, prefix = self._prefix2str(prefix)
         if item in self.operator.binary:
@@ -1181,14 +1184,13 @@ class GDExprClass:
         elif item == 'sigmoid': return f'sigmoid({arg1})', prefix
         elif item == 'regular': return f'regular({arg1}, {arg2})', prefix 
             # return f'({arg1}**{arg2})/({arg1}**{arg2}+1)', prefix
-        elif item == 'aggr': return f'aggr({arg1})', prefix
-        elif item == 'rgga': return f'rgga({arg1})', prefix
-        elif item == 'sour': return f'sour({arg1})', prefix
-        elif item == 'targ': return f'targ({arg1})', prefix
+        elif item == 'aggr': return f'\033[0;33maggr\033[0m({arg1})', prefix
+        elif item == 'rgga': return f'\033[0;33mrgga\033[0m({arg1})', prefix
+        elif item == 'sour': return f'\033[0;33msour\033[0m({arg1})', prefix
+        elif item == 'targ': return f'\033[0;33mtarg\033[0m({arg1})', prefix
         elif item in self.word2id: return item, prefix # placeholder / variable / constant / coefficient
         elif item in ['<Cv>', '<Ce>']: return item, prefix
         elif is_float(item): return format(float(item), f'.{N}f') if '.' in str(item) else str(item), prefix
-        elif isinstance(item, np.ndarray): return f'<{np.mean(item)}+-{np.std(item)} ({len(item.reshape(-1))})>', prefix
         else:
             # raise ValueError(f'Unknown item {item}')
             # logger.warning(f'Unknown item {item}')
