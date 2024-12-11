@@ -326,7 +326,6 @@ class NDformer(nn.Module):
             assert e.shape in [(T, E), (1, E), (E,), (T, 1)]
             if e.ndim == 1: e = e.reshape(1, -1).repeat(T, axis=0)
             if e.shape[-1] == 1: e = e.repeat(E, axis=-1)
-            e = e.expand(T, E)
             var_dict[f'e{idx}'] = e
         self.var_dict = var_dict
         self.var_map = {k: f'v{i}' for i, k in enumerate(Xv, 1)} | \
