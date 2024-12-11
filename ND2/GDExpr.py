@@ -24,9 +24,8 @@ def is_float(value):
 
 eps=1e-7
 class GDExprClass:
-    def __init__(self, config_path='./config/basic.yaml'):
-        self.config = AttrDict.load_yaml(config_path)
-        logger.info(f'[GDExpr] Load config from {config_path}')
+    def __init__(self, config):
+        self.config = config
         
         # self.n_words = self.config.model.decoder.n_words
         self.coeff_token = '<C>'
@@ -1517,4 +1516,70 @@ class GDExprClass:
                prefix.count(self.edge_coeff_token) * E
 
 
-GDExpr = GDExprClass('./config/basic.yaml')
+GDExpr = GDExprClass(AttrDict.load_yaml_str("""
+decomposer:
+    use_random_index: False
+vocabulary:
+    special:
+        pad: 0
+        sos: 1
+        eos: 2
+        query_value: 3
+        query_policy: 4
+        query_index: 5
+    placeholder:
+        node: 6
+        edge: 7
+    variable:
+        node:
+            v1: 10
+            v2: 11
+            v3: 12
+            v4: 13
+            v5: 14
+        edge:
+            e1: 15
+            e2: 16
+            e3: 17
+            e4: 18
+            e5: 19
+    constant:
+        '1': 21
+        '2': 22
+        '3': 23
+        '4': 24
+        '5': 25
+        '(1/2)': 26
+        '(1/3)': 27
+        '(1/4)': 28
+        '(1/5)': 29
+    coefficient: 30
+    operator:
+        binary:
+            add: 31
+            sub: 32
+            mul: 33
+            div: 34
+            pow: 35 # x^y
+            # rac: 36 # x^(1/y)
+            regular: 37
+        unary:
+            neg: 38
+            exp: 39
+            logabs: 40
+            sin: 41
+            cos: 42
+            tan: 43
+            abs: 44
+            inv: 45
+            sqrtabs: 46
+            pow2: 47
+            pow3: 48
+            # sinh: 49
+            # cosh: 50
+            tanh: 51
+            sigmoid: 52 # 1/(1+exp(-x))
+            aggr: 53
+            sour: 54
+            targ: 55
+"""))
