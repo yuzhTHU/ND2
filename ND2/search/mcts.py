@@ -422,18 +422,14 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
             for idx, state in enumerate(states):
                 if rewards[idx] <= self.best_metric['reward']: continue
                 # Recheck the reward
-                rewards[idx], coef_dict = self.get_reward(state, use_cache=False, update_cache=True, sample=False)
-                if coef_dict is None: continue
+                rewards[idx], prefix_with_coef = self.get_reward(state, use_cache=False, update_cache=True, sample=False)
+                if prefix_with_coef is None: continue
                 if rewards[idx] <= self.best_metric['reward']: continue
                 # Update the best result
-                self.best_metric = self.rewarder.evaluate(state, coef_dict) | dict(reward=rewards[idx])
-                tmp = {k: list(v) for k, v in coef_dict.items()}
-                self.best_model = [tmp[token].pop(0) if token in tmp else token for token in state]
-                log = {
-                    'Update': GDExpr.prefix2str(self.best_model),
-                    **self.best_metric
-                }
-                logger.note(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
+                self.best_metric = dict(reward=rewards[idx], equation=GDExpr.prefix2str(prefix_with_coef)) | self.rewarder.evaluate(prefix_with_coef, {})
+                self.best_model = prefix_with_coef
+                log = self.best_metric
+                logger.note('Update best result: ' + ' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
 
         return rewards
 
@@ -447,9 +443,9 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         # Cache
         if use_cache and tuple(state) in self.rewards: return self.rewards[tuple(state)], None
 
-        reward, coef_dict = self.rewarder.solve(state, sample=sample, max_iter=30)
+        reward, prefix_with_coef = self.rewarder.solve(state, sample=sample, max_iter=30)
         if update_cache: self.rewards[tuple(state)] = reward
-        return reward, coef_dict
+        return reward, prefix_with_coef
 
     def plot(self, ax=None, save_path=None, title=None):
         if ax is None:
@@ -495,18 +491,16 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         cur_best_accuracy = -np.inf
         for complex, items in tqdm(results.items(), leave=False, dynamic_ncols=True, disable=print_on_fly):
             for idx, (prefix, reward) in enumerate(items):
-                reward, coef_dict = self.rewarder.solve(list(prefix), sample=False, max_iter=max_iter)
-                metrics = self.rewarder.evaluate(list(prefix), coef_dict)
+                reward, prefix_with_coef = self.rewarder.solve(list(prefix), sample=False, max_iter=max_iter)
+                metrics = self.rewarder.evaluate(prefix_with_coef, {})
                 accuracy = accuracy_metric(metrics)
-                tmp = {k: list(v) for k, v in coef_dict.items()}
-                prefix_with_emb = [tmp[token].pop(0) if token in tmp else token for token in prefix]
-                results[complex][idx] = (prefix_with_emb, accuracy)
-            prefix_with_emb, accuracy = max(results[complex], key=lambda x: x[1])
+                results[complex][idx] = (prefix_with_coef, accuracy)
+            prefix_with_coef, accuracy = max(results[complex], key=lambda x: x[1])
             if accuracy > cur_best_accuracy:
-                pareto.append((prefix_with_emb, complex, accuracy))
+                pareto.append((prefix_with_coef, complex, accuracy))
                 cur_best_accuracy = accuracy
-                if print_on_fly: logger.note(f'Complex={complex:<5} Accuracy={accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_emb)}')
+                if print_on_fly: logger.note(f'Complex={complex:<5} Accuracy={accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_coef)}')
             else:
-                if print_on_fly: logger.debug(f'Complex={complex:<5} Accuracy={cur_best_accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_emb)}')
+                if print_on_fly: logger.debug(f'Complex={complex:<5} Accuracy={cur_best_accuracy:<10.5f} {GDExpr.prefix2str(prefix_with_coef)}')
 
         return pareto

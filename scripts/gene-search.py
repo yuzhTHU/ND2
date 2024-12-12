@@ -34,25 +34,8 @@ class GeneRewardSolver(RewardSolver):
             if self.first_time_log:
                 logger.warning(f"""GeneRewardSolver modified the formula, changing aggr(...) to aggr(<Ce>*...), but this modification is transparent to MCTS. Please pay attention to the way you understand the final formula.""")
                 self.first_time_log = False
-        reward, coef_dict = super().solve(prefix, *args, **kwargs)
-        return reward, coef_dict
-
-    def evaluate(self, prefix, coef_dict, *args, **kwargs):
-        if prefix.count('aggr') > 1: raise ValueError('Invalid prefix.')
-        if prefix.count('aggr') == 1: 
-            idx = prefix.index('aggr')
-            prefix = prefix[:idx+1] + ['mul', '<Ce>'] + prefix[idx+1:]
-        metrics = super().evaluate(prefix, coef_dict, *args, **kwargs)
-
-        tmp = {k: list(v) for k, v in coef_dict.items()}
-        prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix]
-        metrics = {
-            'R2': metrics['R2'],
-            'complexity': metrics['complexity'],
-            'RMSE': metrics['RMSE'],
-            'Equation': GDExpr.prefix2str(prefix_with_coef),
-        }
-        return metrics
+        reward, prefix_with_coef = super().solve(prefix, *args, **kwargs)
+        return reward, prefix_with_coef
 
 
 def main(args):
@@ -117,9 +100,9 @@ def main(args):
     # f = '<Cv> - <Cv> * x + aggr(regular(sour(<Cv>*x), 2))'
     f = '<C> - <C> * x + aggr(regular(sour(<C>*x), 2))'
     prefix = GDExpr.sympy2prefix(GDExpr.parse_expr(f), 'node', reindex=False)
-    reward, coef_dict = rewarder.solve(prefix, sample=False, max_iter=100)
-    metrics = rewarder.evaluate(prefix, coef_dict)
-    log = { 'Baseline': f, **metrics, }
+    reward, prefix_with_coef = rewarder.solve(prefix, sample=False, max_iter=100)
+    metrics = rewarder.evaluate(prefix_with_coef, {})
+    log = { 'reward': reward, 'Baseline': f, **metrics, }
     logger.note(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
 
     # %% Search

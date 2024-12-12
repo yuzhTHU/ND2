@@ -97,7 +97,7 @@ class RewardSolver(object):
 
         if num_C + num_Cv + num_Ce == 0:
             MSE = loss(np.empty(0))
-            coef_dict = {'<C>': [], '<Cv>': [], '<Ce>': []}
+            prefix_with_coef = deepcopy(prefix)
         else:
             x0 = x0 or {'<C>': np.random.randn(num_C),
                         '<Cv>': np.random.randn(num_Cv, V),
@@ -106,14 +106,17 @@ class RewardSolver(object):
             res = minimize(loss, x0, method=method, options={'maxiter': max_iter})
             MSE = res.fun
             coef_dict = params2coefdict(res.x)
+            prefix_with_coef = deepcopy(prefix)
+            tmp = {k: list(v) for k, v in coef_dict.items()}
+            prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix_with_coef]
 
         if not np.isfinite(MSE): MSE = np.inf
         r_MSE = MSE / self.var_out.clip(1e-7)
         if r_MSE < 1e-3: reward = 1 - r_MSE
         else: reward = self.complexity_base ** len(prefix) / (1 + r_MSE)
-        return reward, coef_dict
+        return reward, prefix_with_coef
 
-    def evaluate(self, prefix:List[str], coef_dict:dict) -> dict:
+    def evaluate(self, prefix:List[str], coef_dict:dict={}) -> dict:
         """
         Arguments:
         - prefix: List[str], the prefix expression to be evaluated
@@ -142,11 +145,12 @@ class RewardSolver(object):
             - ACC4: float, the accuracy of the prediction (1e-4)
         """
 
-        prefix_with_coef = deepcopy(prefix)
-        tmp = {k: list(v) for k, v in coef_dict.items()}
-        prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix_with_coef]
+        prefix = deepcopy(prefix)
+        if coef_dict:
+            tmp = {k: list(v) for k, v in coef_dict.items()}
+            prefix = [tmp[token].pop(0) if token in tmp else token for token in prefix]
 
-        pred = GDExpr.eval(prefix_with_coef, self.var_dict, [], strict=False)
+        pred = GDExpr.eval(prefix, self.var_dict, [], strict=False)
         true = self.Y
         residual = (pred - true)
         # result = dict(pred=pred, true=true, mask=self.mask)
