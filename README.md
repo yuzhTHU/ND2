@@ -51,7 +51,7 @@ python ./search.py
 ```
 
 This script will load the pre-trained model and search for the symbolic expression that best fits the synthetic dataset `./data/synthetic/KUR.json` (Kuramoto dynamics) as the figure below.
-![Demo](./assets/demo.png)
+![Demo](./assets/Demo.png)
 
 The search will take approximately **1 minutes** on a single NVIDIA RTX 4070 GPU. After the search is complete, the script will output the best symbolic expression found and its error:
 ![ExpectedResult](./assets/ExpectedResult.png)
