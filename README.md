@@ -71,7 +71,7 @@ $$
 **Q: How to run the code on my own data?**
 
 A: You should save your data in a json file including the keys below:
-```json
+```
 {
     "A" [[A_11, A_12, ..., A_1n], ..., [A_n1, A_n2, ..., A_nn]],  // A_ij is the link relationship (1-link, 0-no link) between node i and node j.
     "G" [[G_in_1, G_out_1], [G_in_2, G_out_2], ..., [G_in_m, G_out_m]],   // G_in_k, G_out_k are the indices (start from 0) of the nodes connected by the k-th edge.
@@ -82,7 +82,7 @@ A: You should save your data in a json file including the keys below:
 where `A` is the adjacency matrix, `G` is the edge lists, `X` is the input data, and `Y` is the output data. 
 - If you have multiple input data, save them as `X1`, `X2`, ... (no more than 5). 
 - If you have edge-level input data (such as edge weights), save them as `E` (or `E1`, `E2`, ..., no more than 5 as well):
-    ```json
+    ```
     {
         ...
         "E": [[e_11, e_12, ..., e_1m], ..., [e_t1, e_t2, ..., e_tm]],
