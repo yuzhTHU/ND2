@@ -16,29 +16,21 @@ from ND2.GDExpr import GDExpr
 from ND2.search.reward_solver import RewardSolver
 
 warnings.filterwarnings("ignore", category=RuntimeWarning)
-def handler(signum, frame): raise KeyboardInterrupt    
+def handler(signum, frame): raise KeyboardInterrupt
 signal.signal(signal.SIGINT, handler)
 signal.signal(signal.SIGTERM, handler)
-
 logger = logging.getLogger('ND2.search')
 
 
 def main(args):
-    init_logger(args.name, f'./log/search/{args.name}/info.log', root_name='ND2', info_level=args.info_level)
-    setproctitle(f'{args.name}@ZihanYu')
-    if args.seed is None: args.seed = np.random.randint(0, 32768)
-    seed_all(args.seed)
-    if args.device == 'auto': args.device = AutoGPU().choice_gpu(900, interval=15, force=True)
-    logger.info(f'Args: {args}')
-
-    # %% Load Data
-    data = json.load(open('./data/synthetic/kuramoto.json', 'r'))
+    # %% Load Data & Init Model
+    data = json.load(open('./data/synthetic/KUR.json', 'r'))
     for k, v in data.items():
         data[k] = np.array(v)
     data['A'] = data['A'].astype(int)
     data['G'] = data['G'].astype(int)
 
-    # %% Init Model
+    # init Rewarder
     rewarder = RewardSolver(
         Xv={'omega': data['omega'], 'x': data['x']},
         Xe={},
@@ -47,6 +39,8 @@ def main(args):
         Y=data['dx'],
         mask=None,
     )
+    
+    # init NDformer
     ndformer = NDformer(device=args.device)
     ndformer.load('./weights/checkpoint.pth', weights_only=False)
     ndformer.eval()
@@ -59,6 +53,8 @@ def main(args):
         root_type='node',
         cache_data_emb=True
     )
+
+    # init Monte-Carlo Tree Search algorithm
     est = MCTS(
         rewarder=rewarder,
         ndformer=ndformer,
@@ -75,17 +71,14 @@ def main(args):
 
     # %% Search
     try:
-        est.fit(['node']) 
+        est.fit()
     except KeyboardInterrupt as e: 
         logger.info(f'Interrupted manually.')
     except Exception:
         logger.error(traceback.format_exc())
     finally:
-        log = {
-            'Discovered': GDExpr.prefix2str(est.best_model),
-            **est.best_metric,
-        }
-        logger.info(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
+        logger.note(f'Search finished. Discovered model: {GDExpr.prefix2str(est.best_model)}')
+        logger.note(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in est.best_metric.items()))
 
         save_path = f'./result/search.csv'
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
@@ -101,9 +94,19 @@ def main(args):
 if __name__ == '__main__':
     parser = ArgumentParser()
     parser.add_argument('-n', '--name', type=str, default=f'Search_{time.strftime("%Y%m%d_%H%M%S")}')
-    parser.add_argument('-d', '--device', type=str, default='auto')
-    parser.add_argument('-s', '--seed', type=int, default=None)
+    parser.add_argument('-d', '--device', type=str, default='cuda')
+    parser.add_argument('-s', '--seed', type=int, default=1)
     parser.add_argument('--info_level', choices=['debug', 'info', 'note', 'warning', 'error', 'critical'], default='info')
     args, unknown = parser.parse_known_args()
-    if unknown: warnings.warn(f'Unknown args: {unknown}')
+    if unknown: 
+        warnings.warn(f'Unknown args: {unknown}')
+    init_logger(args.name, f'./log/search/{args.name}/info.log', root_name='ND2', info_level=args.info_level)
+    setproctitle(f'{args.name}@ZihanYu')
+    if args.seed is None: 
+        args.seed = np.random.randint(0, 32768)
+    seed_all(args.seed)
+    if args.device == 'auto': 
+        args.device = AutoGPU().choice_gpu(900, interval=15, force=False)
+    logger.info(f'Args: {args}')
+
     main(args)

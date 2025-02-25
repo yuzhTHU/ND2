@@ -99,7 +99,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
                               # V: prior value (or reward value if terminal) of current state
         self.best_model = []
         self.best_metric = defaultdict(lambda: np.nan) | {'reward': -np.inf}
-        self.search_history = [] # List of tuple([current rewards], current best reward, current best prefix)
+        # self.search_history = [] # List of tuple([current rewards], current best reward, current best prefix)
 
         self.named_timer = NamedTimer()
         self.episode_timer = Timer()
@@ -107,7 +107,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         self.eq_timer = AbsTimer()
 
     def fit(self, 
-            root_prefix:List[str], 
+            root_prefix:List[str]=['node'], 
             episode_limit:int=1_000_000,
             time_limit:int=None,
             early_stop=lambda best_metric: best_metric['ACC4'] > 0.99,
@@ -159,11 +159,14 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
                self.log_per_second and (self.episode_timer.time > self.log_per_second):
                 log = {
                     'Episode': f'{episode}',
-                    'Speed': f'{self.episode_timer.pop():.2f} episode/s, {self.state_timer.pop():.2f} expanded node/s, {self.eq_timer.pop():.2f} eq/s',
-                    'Time Usage': self.named_timer.pop(),
-                    **self.best_metric,
-                    'Best': GDExpr.prefix2str(self.best_model),
-                    'Current': GDExpr.prefix2str(states_to_expand[0]) if states_to_expand else 'None',
+                    'Best-RMSE': f'{self.best_metric["RMSE"]:.4f}',
+                    'Best-R2': f'{self.best_metric["R2"]:.4f}',
+                    'Best-Complexity': f'{self.best_metric["complexity"]}',
+                    'Best-Equation': GDExpr.prefix2str(self.best_model),
+                    'Search-Speed': f'{self.episode_timer.pop():.2f} episode/s, {self.state_timer.pop():.2f} expanded node/s, {self.eq_timer.pop():.2f} eq/s',
+                    # **self.best_metric,
+                    # 'Time Usage': self.named_timer.pop(),
+                    # 'Current-Equation': GDExpr.prefix2str(states_to_expand[0]) if states_to_expand else 'None',
                 }
                 logger.info(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
 
@@ -448,6 +451,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         return reward, prefix_with_coef
 
     def plot(self, ax=None, save_path=None, title=None):
+        raise DeprecationWarning('This function is deprecated.')
         if ax is None:
             fig, ax = plt.subplots(1, 1, figsize=(3.26, 3.55), dpi=300)
         plt.rcParams['font.size'] = 7
