@@ -55,14 +55,13 @@ This script will load the pre-trained model and search for the symbolic expressi
 
 The search will take approximately **1 minutes** on a single NVIDIA RTX 4070 GPU. After the search is complete, the script will output the best symbolic expression found and its error:
 ![ExpectedResult](./assets/ExpectedResult.png)
-As shown in the figure, the discovered formula is
-$$
-\dot{\bm x} = \bm\omega \times 1.0000 + 1.0000 \times \rho(\sin(\bm\phi_s(x) - \bm\phi_t(x))),
-$$
-which is exactly the Kuramoto dynamics by changing $\rho(\cdot) \rightarrow \sum_j A_{ij}(\cdot)$, $\phi_s(\cdot) \rightarrow (\cdot)_i$ and $\phi_t(\cdot) \rightarrow (\cdot)_j$ (we discuss this detailedly in our paper):
-$$
-\dot{x}_i = \omega_i + \sum_{j} A_{ij} \sin (x_i - x_j).
-$$
+As shown in the figure, the discovered formula is 
+
+$`\dot{x} = \omega \times 1.0000 + 1.0000 \times \rho(\sin(\phi_s(x) - \phi_t(x))),`$
+
+which is exactly the Kuramoto dynamics by changing $\rho(\cdot) \rightarrow \sum_j A_{ij}(\cdot)$, $\phi_s(\cdot) \rightarrow (\cdot)_i$ and $\phi_t(\cdot) \rightarrow (\cdot)_j$ (we discuss this detailedly in our paper): 
+
+$`\dot{x}_i = \omega_i + \sum_j A_{ij} \sin (x_i - x_j).`$
 
 
 
@@ -73,9 +72,16 @@ $$
 A: You should save your data in a json file including the keys below:
 ```
 {
-    "A" [[A_11, A_12, ..., A_1n], ..., [A_n1, A_n2, ..., A_nn]],  // A_ij is the link relationship (1-link, 0-no link) between node i and node j.
-    "G" [[G_in_1, G_out_1], [G_in_2, G_out_2], ..., [G_in_m, G_out_m]],   // G_in_k, G_out_k are the indices (start from 0) of the nodes connected by the k-th edge.
+    // A_ij is the link relationship (1-link, 0-no link) between node i and node j.
+    "A": [[A_11, A_12, ..., A_1n], ..., [A_n1, A_n2, ..., A_nn]],
+
+    // G_in_k, G_out_k are the indices (start from 0) of the nodes connected by the k-th edge.
+    "G": [[G_in_1, G_out_1], [G_in_2, G_out_2], ..., [G_in_m, G_out_m]],
+
+    // x_tn is the input data (e.g., state) on n-th node at time step t
     "X": [[x_11, x_12, ..., x_1n], ..., [x_t1, x_t2, ..., x_tn]],
+
+    // y_tn is the output data (e.g., state derivative) on n-th node at time step t
     "Y": [[y_11, y_12, ..., y_1n], ..., [y_t1, y_t2, ..., y_tn]],
 }
 ```
@@ -85,8 +91,9 @@ where `A` is the adjacency matrix, `G` is the edge lists, `X` is the input data,
     ```
     {
         ...
+        // e_tm is the input data (e.g., weight) on m-th edge at time step t.
+        // Note that the order of the edges in "E" should be consistent with that in "G".
         "E": [[e_11, e_12, ..., e_1m], ..., [e_t1, e_t2, ..., e_tm]],
-        // Note that the order of the edges in `E` should be consistent with that in `G`.
         ...
     }
     ```
