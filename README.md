@@ -1,3 +1,5 @@
+**Note: We have added some experiments and are organizing the code. We will upload it to the repository within a week (before 9 June 2025).**
+
 > Official implementation of "*Discover network dynamics with neural symbolic regression*". 
 
 This repository contains the code and data for the experiments in the paper. The code is written in Python and PyTorch.
