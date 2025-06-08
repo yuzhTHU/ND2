@@ -6,18 +6,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 from typing import List, Dict, Tuple, Union, Literal
 from .utils import GNN, PositionalEncoding
-from ..utils import NamedTimer
 from ..GDExpr import GDExpr
 import warnings
 
-timer = NamedTimer()
 
 # See https://github.com/pytorch/pytorch/issues/100469
 warnings.filterwarnings("ignore", message="Converting mask without torch.bool dtype to bool; this will negatively affect performance. Prefer to use a boolean mask directly.")
-
 logger = logging.getLogger('ND2.Model')
 
-DEBUG_SPLIT_FLAG = '--split' in sys.argv
 
 class Encoder(nn.Module):
     def __init__(self, d_emb, dropout, d_data_feat, n_node_vars, n_edge_vars,
@@ -50,7 +46,7 @@ class Encoder(nn.Module):
                 batch_first=True
             ), self.n_transformer_layers)
 
-    def forward(self, v_bits, e_bits, G, A, root_type):
+    def forward(self, v_bits, e_bits, G, A, root_type, mask=None):
         """
         BatchSize = 1!!!
         Input:
@@ -59,6 +55,7 @@ class Encoder(nn.Module):
         - G: (E, 2) (type=int64)
         - A: (V, V) (type=int64)
         - root_type: 'node' or 'edge'
+        - mask: (N, V or E), only smaple those mask=True
 
         Output:
         - out: (max_sample_num, d_emb)
@@ -77,7 +74,10 @@ class Encoder(nn.Module):
         else:
             v_emb, e_emb = self.GNN(v_emb, e_emb, G, A) # (N, V, d_emb), (N, E, d_emb)
         data_emb = v_emb if root_type == 'node' else e_emb # (N, V/E, d_emb)
-        data_emb = data_emb.flatten(0, 1) # (N * V/E, d_emb)
+        if mask is not None:
+            data_emb = data_emb[mask, :] # (subset of {N * V/E}, d_emb)
+        else:
+            data_emb = data_emb.flatten(0, 1) # (N * V/E, d_emb)
         if data_emb.shape[0] > self.max_sample_num:
             data_emb = data_emb[torch.randperm(data_emb.shape[0])[:self.max_sample_num]] # (N_max, d_emb)
         data_emb = self.Transformer(data_emb)
@@ -163,7 +163,7 @@ class NDformer(nn.Module):
                  n_edge_vars=6,
                  n_transformer_encoder_layers=2,
                  n_GNN_layers=2,
-                 max_sample_num=300,
+                 max_sample_num=3000,
                  split=False,
                  use_aux_input=True,
                  n_words=60, # vocabulary size
@@ -230,7 +230,7 @@ class NDformer(nn.Module):
         except Exception as e:
             logger.warning(f'Load checkpoint "{path}" failed: {e}')
         
-    def encode(self, root_type, var_dict, sample=True):
+    def encode(self, root_type, var_dict, mask=None, sample=True):
         """
         Input:
         - v: (N, V, <= max_node_vars_n)
@@ -262,12 +262,13 @@ class NDformer(nn.Module):
                 v = v[sample_idx]
                 e = e[sample_idx]
                 N = n
+                if mask is not None: mask = mask[sample_idx]
 
         v_bits = torch.from_numpy(GDExpr.parse_float(v)).to(self.device, torch.float32) # (N, V, 1 + d_v, 16)
         e_bits = torch.from_numpy(GDExpr.parse_float(e)).to(self.device, torch.float32) # (N, E, 1 + d_e, 16)
         G = torch.from_numpy(G).to(self.device, torch.long) # (E, 2)
         A = torch.from_numpy(A).to(self.device, torch.long) # (V, V)
-        data_emb = self.encoder(v_bits, e_bits, G, A, root_type)
+        data_emb = self.encoder(v_bits, e_bits, G, A, root_type, mask=mask)
         return data_emb
 
     def decode(self, data_emb:torch.Tensor, expr_ids:torch.LongTensor, parents:torch.LongTensor=None, types:torch.LongTensor=None):
@@ -299,6 +300,7 @@ class NDformer(nn.Module):
                  G:np.ndarray, 
                  Y:np.ndarray, 
                  root_type:Literal['node', 'edge'], 
+                 mask=None,
                  cache_data_emb=True):
         """
         Input:
@@ -308,6 +310,7 @@ class NDformer(nn.Module):
         - G: (E, 2) (int)
         - Y: (N, V or E)
         - root_type: 'node' or 'edge'
+        - mask: (N, V or E)
         """
         V = A.shape[0]
         E = G.shape[0]
@@ -336,7 +339,7 @@ class NDformer(nn.Module):
         self.data_emb = None
         if cache_data_emb:
             with torch.no_grad():
-                self.data_emb = self.encode(self.root_type, self.var_dict)
+                self.data_emb = self.encode(self.root_type, self.var_dict, mask)
 
     def get_policy(self, 
                    prefixes:List[List[str]], 
@@ -345,15 +348,12 @@ class NDformer(nn.Module):
         self.eval()
         with torch.no_grad():
             if not hasattr(self, 'var_dict'): raise ValueError('Please call .set_data() first!')
-            timer.add('drop')
             
             prefixes = [[self.var_map.get(token, token) for token in prefix] for prefix in prefixes]
-            timer.add('map')
 
             if not self.cache_data_emb:
-                    self.data_emb = self.encode(self.root_type, self.var_dict)
+                self.data_emb = self.encode(self.root_type, self.var_dict)
             data_emb = self.data_emb.to(self.device)
-            timer.add('encode')
 
             expr_ids = [torch.from_numpy(GDExpr.vectorize(['sos', self.root_type, *prefix, 'eos'])) for prefix in prefixes]
             expr_ids = torch.nn.utils.rnn.pad_sequence(expr_ids, batch_first=True, padding_value=GDExpr.pad_id)
@@ -366,20 +366,16 @@ class NDformer(nn.Module):
             types = [torch.from_numpy(GDExpr.vectorize(['sos', self.root_type, *GDExpr.analysis_type(prefix, self.root_type), 'eos'])) for prefix in prefixes]
             types = torch.nn.utils.rnn.pad_sequence(types, batch_first=True, padding_value=GDExpr.pad_id)
             types = types.to(self.device)
-            timer.add('embed')
 
             with torch.no_grad():
                 _, policy, _ = self.decoder(data_emb, expr_ids, parents, types)
-            timer.add('forward')
             if actions is not None:
                 policy = policy[:, GDExpr.vectorize([self.var_map.get(a, a) for a in actions])]
             if mask is not None:
                 mask = torch.from_numpy(np.stack(mask, axis=0)).to(self.device)
                 policy.masked_fill_(~mask, -np.inf)
             policy = policy.softmax(-1).cpu().numpy()
-            timer.add('post')
 
-            if timer.total() > 10: logger.debug(timer.pop())
         return policy
 
     def forward(self, prefixes:List[List[str]], root_type:str, 

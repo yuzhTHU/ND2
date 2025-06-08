@@ -18,12 +18,12 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from ..model import NDformer
 from ..GDExpr import GDExprClass, GDExpr
 from .reward_solver import RewardSolver
-from ..utils import NamedTimer, Timer, AbsTimer, seed_all
+from ..utils import NamedTimer, AbsTimer, Timer, seed_all
 logger = logging.getLogger('ND2.MCTS')
 
 class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
     def __init__(self, 
-                 rewarder:RewardSolver=None, 
+                 rewarder:RewardSolver, 
                  ndformer:NDformer=None,
                  vars_node:List[str]=[],
                  vars_edge:List[str]=[],
@@ -38,17 +38,17 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
                                        '(1/2)', '(1/3)', '(1/4)', '(1/5)'],
                  log_per_episode:int=100,
                  log_per_second:int=10,
-                 select_tempreture:float=0.0,
+                 log_detailed_speed:bool=False,
+                 tempreture:float=0.0,
                  beam_size:int=10,
                  lambda_rollout:float=0.5,
-                 max_token_num:int=40,
+                 max_token_num:int=30,
                  max_coeff_num:int=5,
                  random_state:int=0,
                  c_puct:float=5.0,
                  repeat_times:int=10,
                  use_random_simulate:bool=False,
-                 **kwargs
-                 ): 
+                 **kwargs): 
         """
         Arguments:
         - Xv: Dict[str, np.ndarray], for each X['variable'], whose shape = (Time, Node)
@@ -61,7 +61,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         - ndformer: NDformer
         """
         super().__init__()
-        self.rewarder = rewarder or RewardSolver()
+        self.rewarder = rewarder
         self.ndformer = ndformer
         self.vars_node = vars_node
         self.vars_edge = vars_edge
@@ -70,7 +70,8 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         self.constant = constant
         self.log_per_episode = log_per_episode
         self.log_per_second = log_per_second
-        self.tempreture = select_tempreture
+        self.log_detailed_speed = log_detailed_speed
+        self.tempreture = tempreture
         self.beam_size = beam_size
         self.lambda_rollout = lambda_rollout
         self.max_token_num = max_token_num
@@ -86,7 +87,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         self.n_actions = len(self.actions)
 
         if kwargs: logger.warning(f'Unused arguments: {kwargs} in MCTS')
-        assert select_tempreture >= 0
+        assert tempreture >= 0
         assert beam_size >= 1
         assert 0 <= lambda_rollout <= 1
         assert len(set(self.actions)) == len(self.actions)
@@ -102,25 +103,25 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         # self.search_history = [] # List of tuple([current rewards], current best reward, current best prefix)
 
         self.named_timer = NamedTimer()
-        self.episode_timer = Timer()
-        self.state_timer = Timer()
-        self.eq_timer = AbsTimer()
+        self.episode_timer = Timer(unit='episode')
+        self.state_timer = Timer(unit='expanded node')
+        self.eq_timer = AbsTimer(unit='eq')
+        self.eq_timer.last = 0
 
     def fit(self, 
             root_prefix:List[str]=['node'], 
             episode_limit:int=1_000_000,
             time_limit:int=None,
-            early_stop=lambda best_metric: best_metric['ACC4'] > 0.99,
-            ):
+            early_stop=lambda best_metric: best_metric['ACC4'] > 0.99):
         """
         Arguments:
         - root_prefix: e.g.1: ['node'], e.g.2: ['add', 'node', 'aggr', 'sour', 'node']
         """
         self.start_time = time.time()
-        self.named_timer.reset()
-        self.episode_timer.reset()
-        self.state_timer.reset()
-        self.eq_timer.reset()
+        self.named_timer.clear()
+        self.episode_timer.clear()
+        self.state_timer.clear()
+        self.eq_timer.clear()
         seed_all(self.random_state)
 
         self.expand([root_prefix])
@@ -153,7 +154,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
 
             self.episode_timer.add(1)
             self.state_timer.add(len(states_to_expand))
-            self.eq_timer.set(len(self.rewards))
+            self.eq_timer.add(len(self.rewards))
             # self.search_history.append((Q.tolist(), self.best_metric['reward'], self.best_metric['prefix']))
             if self.log_per_episode and (episode % self.log_per_episode == 0) or \
                self.log_per_second and (self.episode_timer.time > self.log_per_second):
@@ -162,12 +163,19 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
                     'Best-RMSE': f'{self.best_metric["RMSE"]:.4f}',
                     'Best-R2': f'{self.best_metric["R2"]:.4f}',
                     'Best-Complexity': f'{self.best_metric["complexity"]}',
-                    'Best-Equation': GDExpr.prefix2str(self.best_model),
-                    'Search-Speed': f'{self.episode_timer.pop():.2f} episode/s, {self.state_timer.pop():.2f} expanded node/s, {self.eq_timer.pop():.2f} eq/s',
+                    'Best-Equation': GDExpr.prefix2str(self.best_model) if len(self.best_model) else 'None',
+                    'Search-Speed': f'{self.episode_timer}, {self.state_timer}, {self.eq_timer}',
                     # **self.best_metric,
-                    # 'Time Usage': self.named_timer.pop(),
+                    'Time-Usage': str(self.named_timer),
                     # 'Current-Equation': GDExpr.prefix2str(states_to_expand[0]) if states_to_expand else 'None',
                 }
+                if not self.log_detailed_speed:
+                    log.pop('Search-Speed')
+                    log.pop('Time-Usage')
+                self.named_timer.clear()
+                self.episode_timer.clear()
+                self.state_timer.clear()
+                self.eq_timer.clear()
                 logger.info(' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))
 
             if early_stop is not None and early_stop(self.best_metric):
@@ -272,7 +280,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         if self.tabula_rasa or self.use_random_simulate:
             return self.random_simulate(states_to_expand)
         else:
-            return self.NN_simulate(states_to_expand)
+            return self.neural_simulate(states_to_expand)
 
     def random_simulate(self, states_to_expand:List[List[str]]):
         states = states_to_expand * self.repeat_times
@@ -290,7 +298,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
         Q = np.max(all_Q, axis=0)
         return Q
 
-    def NN_simulate(self, states_to_expand:List[List[str]]):
+    def neural_simulate(self, states_to_expand:List[List[str]]):
         states = states_to_expand * self.repeat_times
         while True:
             self.named_timer.add('simulate.pre')
@@ -429,7 +437,7 @@ class MCTS(sklearn.base.BaseEstimator, sklearn.base.RegressorMixin):
                 if prefix_with_coef is None: continue
                 if rewards[idx] <= self.best_metric['reward']: continue
                 # Update the best result
-                self.best_metric = dict(reward=rewards[idx], equation=GDExpr.prefix2str(prefix_with_coef)) | self.rewarder.evaluate(prefix_with_coef, {})
+                self.best_metric = dict(reward=rewards[idx], equation=GDExpr.prefix2str(prefix_with_coef), time=time.time()-self.start_time) | self.rewarder.evaluate(prefix_with_coef, {})
                 self.best_model = prefix_with_coef
                 log = self.best_metric
                 logger.note('Update best result: ' + ' | '.join(f'\033[4m{k}\033[0m:{v}' for k, v in log.items()))

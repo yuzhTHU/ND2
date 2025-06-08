@@ -70,9 +70,11 @@ class RewardSolver(object):
                        {k: (v[sample_idx] if v.ndim > 1 else v) for k, v in self.Xv.items()} | \
                        {k: (v[sample_idx] if v.ndim > 1 else v) for k, v in self.Xe.items()}
             Y = var_dict['out']
+            if self.mask is not None: mask = self.mask[sample_idx]
         else:
             var_dict = self.var_dict
             Y = self.Y
+            mask = self.mask
 
         def params2coefdict(params):
             coef_dict = {
@@ -91,8 +93,7 @@ class RewardSolver(object):
             pred = GDExpr.eval(prefix_with_coef, var_dict, [], strict=False)
             true = Y
             if self.mask is not None:
-                pred = pred[self.mask]
-                true = true[self.mask]
+                return np.mean((pred - true)[mask] ** 2)
             return np.mean((pred - true) ** 2)
 
         if num_C + num_Cv + num_Ce == 0:
@@ -103,9 +104,13 @@ class RewardSolver(object):
                         '<Cv>': np.random.randn(num_Cv, V),
                         '<Ce>': np.random.randn(num_Ce, E)}
             x0 = np.concatenate([x0['<C>'], x0['<Cv>'].reshape(-1), x0['<Ce>'].reshape(-1)])
-            res = minimize(loss, x0, method=method, options={'maxiter': max_iter})
-            MSE = res.fun
-            coef_dict = params2coefdict(res.x)
+            if max_iter > 0:
+                res = minimize(loss, x0, method=method, options={'maxiter': max_iter})
+                MSE = res.fun
+                coef_dict = params2coefdict(res.x)
+            else:
+                coef_dict = params2coefdict(x0)
+                MSE = loss(x0)
             prefix_with_coef = deepcopy(prefix)
             tmp = {k: list(v) for k, v in coef_dict.items()}
             prefix_with_coef = [tmp[token].pop(0) if token in tmp else token for token in prefix_with_coef]
@@ -155,6 +160,10 @@ class RewardSolver(object):
         residual = (pred - true)
         # result = dict(pred=pred, true=true, mask=self.mask)
         if self.mask is not None:
+            if pred.ndim == 1 and pred.shape[-1] == true.shape[-1]:
+                pred = pred[np.newaxis, :].repeat(true.shape[0], axis=0)
+            elif pred.ndim == 2 and pred.shape[0] == 1 and true.shape[0] > 1:
+                pred = pred.repeat(true.shape[0], axis=0)
             true = true[self.mask]
             pred = pred[self.mask]
             residual = residual[self.mask]
@@ -176,9 +185,18 @@ class RewardSolver(object):
 
 class RolloutRewardSolver(RewardSolver):
     """ 专供 population """
-    def __init__(self, config, N, name='x'):
-        config.sample_num = None
-        super().__init__(config)
+    def __init__(self, 
+                 Xv:Dict[str, np.ndarray],
+                 Xe:Dict[str, np.ndarray],
+                 A:np.ndarray,
+                 G:np.ndarray,
+                 Y:np.ndarray,
+                 complexity_base=0.999,
+                 N=10, 
+                 name='x', 
+                 **kwargs):
+        if kwargs: logger.warning(f'Unused arguments: {kwargs} in RolloutRewardSolver')
+        super().__init__(Xv=Xv, Xe=Xe, A=A, G=G, Y=Y, mask=None, complexity_base=complexity_base, sample_num=None)
         self.N = N
         self.name = name
         self.parse = lambda x: x.clip(0, 1)
@@ -188,8 +206,8 @@ class RolloutRewardSolver(RewardSolver):
         rollout = [var_dict[self.name]]
         for t in range(T - 1):
             for n in range(self.N):
-                dt = f(var_dict, coef_list)
-                var_dict[self.name] = self.parse(var_dict[self.name] + dt / self.N)
+                x_ = var_dict[self.name] + f(var_dict, coef_list) / self.N
+                var_dict[self.name] = self.parse(x_)
                 rollout.append(var_dict[self.name])
         return np.concatenate(rollout, axis=0)
 

@@ -5,6 +5,17 @@ from typing import List, Dict, Literal, Union
 from functools import reduce
 from scipy.optimize import minimize
 import logging
+from numba import njit, prange
+
+@njit(parallel=True)
+def scatter_add_2D(x: np.ndarray, index: np.ndarray, y: np.ndarray) -> np.ndarray:
+    # 假设 x, y 都是 2D，沿第 1 维索引累加
+    N, E = x.shape
+    for n in prange(N):
+        for e in range(E):
+            v = index[e]
+            y[n, v] += x[n, e]
+    return y
 
 logger = logging.getLogger('ND2.symbols')
 
@@ -486,6 +497,12 @@ class Sqrt(Symbol):
         return np.sqrt(self.operands[0].eval(*args, **kwargs))    
 sqrt = lambda x: Sqrt(x)
 
+class SqrtAbs(Symbol):
+    n_operands = 1
+    def eval(self, *args, **kwargs):
+        return np.sqrt(np.abs(self.operands[0].eval(*args, **kwargs)))
+sqrtabs = lambda x: SqrtAbs(x)
+
 
 class Abs(Symbol):
     n_operands = 1
@@ -568,11 +585,13 @@ class Sour(Symbol):
         A, G = kwargs['A'], kwargs['G'] # (V, V), (E, 2)
         V, E = A.shape[0], G.shape[0]
         if isinstance(x, numbers.Number) or x.size == 1:
-            x = np.full((V,), x)
-        elif self.operands[0].nettype == 'scalar': 
+            return x # (1,) -> (1,)
+            # x = np.full((V,), x)
+        elif self.operands[0].nettype == 'scalar' or x.shape[-1] == 1:
             if x.shape[-1] != 1: x = x[..., np.newaxis]
-            x = np.repeat(x, V, axis=-1)
-        return x[..., G[:, 0]] # (*, V) -> (*, E)
+            return x
+        else:
+            return x[..., G[:, 0]] # (*, V) -> (*, E)
 
 
 class Targ(Symbol):
@@ -618,14 +637,20 @@ class Aggr(Symbol):
         A, G = kwargs['A'], kwargs['G'] # (V, V), (E, 2)
         V, E = A.shape[0], G.shape[0]
         if isinstance(x, numbers.Number) or x.size == 1:
-            x = np.full((E,), x)
-        elif self.operands[0].nettype == 'scalar': 
+            # x = np.full((E,), x)
+            y = np.zeros((V,))
+            np.add.at(y, G[:, 1], x)
+            return y
+        elif self.operands[0].nettype == 'scalar' or x.shape[-1] == 1:
             if x.shape[-1] != 1: x = x[..., np.newaxis]
-            x = np.repeat(x, E, axis=-1)
-        y = np.zeros((*x.shape[:-1], V)) # (*, V)
-        for edge_idx in range(E):
-            y[..., G[edge_idx, 1]] += x[..., edge_idx]
-        return y
+            y = np.zeros((V,))
+            np.add.at(y, G[:, 1], 1)
+            y = y * x
+            return y
+        else:
+            y = np.zeros((*x.shape[:-1], V))
+            scatter_add_2D(x, G[:, 1], y)
+            return y
 
 
 class Rgga(Symbol):
@@ -642,6 +667,7 @@ class Rgga(Symbol):
 
     def eval(self, *args, **kwargs):
         """(*, n_edges) -> (*, n_nodes)"""
+        raise NotImplementedError('Rgga is not implemented yet')
         x = self.operands[0].eval(*args, **kwargs)
         A, G = kwargs['A'], kwargs['G'] # (V, V), (E, 2)
         V, E = A.shape[0], G.shape[0]

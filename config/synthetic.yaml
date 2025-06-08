@@ -1,0 +1,264 @@
+CR: # Phase Synchronization of Coupled Rossler Oscillators: Amplitude Effect (Communications in Theoretical Physics, 2008)
+  network:
+    V: 10
+    E: 90
+    direction: False
+  N: 1000
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: x + dx * dt
+      y:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: y + dy * dt
+      z:
+        type: node
+        initialize: np.random.uniform(0.1, 0.9, (1, V))
+        update: z + dz * dt
+      omega:
+        type: node
+        initialize: np.random.uniform(0.5, 1.5, (1, V))
+        update: omega
+    dependent:
+      dx:
+        type: node
+        GD_expr: -omega * y - z + 0.5 * aggr(sin(sour(x, G, A)-term(x, G, A)), G, A)
+      dy:
+        type: node
+        GD_expr: omega * x + 0.165 * y
+      dz:
+        type: node
+        GD_expr: 2.0 + z * (x - 5.5)
+  plot: [x, y, z]
+
+FHN:
+  network: # '../Data/network/BA_Nnodes100_Adj.csv'
+    V: 10
+    E: 90
+    direction: True
+  N: 1000
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(0, 1, (1, V))
+        update: x + dx * dt
+      y:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: y + dy * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: x - x**3 - y - 1 * aggr(sour(x, G, A) - term(x, G, A), G, A) / aggr(1, G, A)
+      dy:
+        type: node
+        GD_expr: 0.28 + 0.5 * x - 0.04 * y
+  plot: [x, y]
+
+
+GR: # Reconstructing nonlinear dynamic models of gene regulation using stochastic sampling
+  network: # '../Data/network/BA_Nnodes100_Adj.csv'
+    V: 50
+    E: 510
+    direction: True
+  N: 200
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(0, 1, (1, V))
+        update: x + dx * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: 0.2 - 0.9 * x + 2.0 * aggr(sour(regular(x / 1.5, 2), G, A), G, A)
+  plot: [x]
+
+HCR: # Autonomous inference of complex network dynamics from incomplete and noisy data (NCS'22)
+  network: # '../Data/network/BA_Nnodes100_Adj.csv'
+    V: 10
+    E: 90
+    direction: True
+  N: 1000
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: x + dx * dt
+      y:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: y + dy * dt
+      z:
+        type: node
+        initialize: np.random.uniform(0.1, 0.9, (1, V))
+        update: z + dz * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: -y - z + 0.5 * aggr(sin(sour(x, G, A)-term(x, G, A)), G, A)
+      dy:
+        type: node
+        GD_expr: x + 0.165 * y
+      dz:
+        type: node
+        GD_expr: 2.0 + z * (x - 5.5)
+  plot: [x, y, z]
+
+
+KUR:
+  network: 
+    use: baseline/NCS22/data/Networks/Northern-European_adj.csv
+  N: 1000
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      theta:
+        type: node
+        initialize: np.random.uniform(-np.pi, np.pi, (1, V))
+        update: np.mod(theta + omega * dt + np.pi, 2 * np.pi) - np.pi
+      omega0:
+        type: node
+        initialize: np.random.uniform(-5, 5, (1, V))
+        update: omega0
+    dependent:
+      omega:
+        type: node
+        GD_expr: omega0 + 1.0*aggr(sin(sour(theta, G, A)-term(theta, G, A)), G, A)
+  plot: [sin(x)]
+
+
+LV:
+  network:
+    V: 10
+    E: 20
+    direction: True
+    DAG: True
+  N: 200
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      alpha:
+        type: node
+        initialize: np.random.uniform(0.0, 1.0, (1, V))
+        update: alpha
+      theta:
+        type: node
+        initialize: np.random.uniform(0.0, 1.0, (1, V))
+        update: theta
+      x:
+        type: node
+        initialize: np.random.uniform(0.0, 1.0, (1, V))
+        update: np.clip(x + dx * dt, 0, None)
+    dependent:
+      dx:
+        type: node
+        GD_expr: x * (alpha - theta * x) - aggr(term(x, G, A) * sour(x, G, A), G, A)
+  plot: [x]
+
+MM:
+  network:
+    V: 10
+    E: 40
+    direction: False
+  N: 400
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(0.1, 5.0, (1, V))
+        update: x + dx * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: -x + aggr(sour(regular(x, 2), G, A), G, A)
+  plot: [x]
+
+WC:
+  network:
+    V: 10
+    E: 40
+    direction: True
+  N: 400
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(0.0, 5.0, (1, V))
+        update: x + dx * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: -x + aggr(sour(sigmoid(5.1*(x-1.0)), G, A), G, A)
+  plot: [x]
+
+MP:
+  network:
+    V: 10
+    E: 40
+    direction: False
+  N: 200
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      alpha:
+        type: node
+        initialize: np.random.uniform(0.1, 0.9, (1, V))
+        update: alpha
+      theta:
+        type: node
+        initialize: np.random.uniform(0.1, 0.9, (1, V))
+        update: theta
+      x:
+        type: node
+        initialize: np.random.uniform(0.1, 5.0, (1, V))
+        update: x + dx * dt
+    dependent:
+      dx:
+        type: node
+        GD_expr: x * (alpha - theta * x) + aggr(term(x, G, A) * sour(regular(x, 2), G, A), G, A)
+  plot: [x]
+
+SIS:
+  network:
+    V: 20
+    E: 150
+    direction: False
+  N: 100
+  dt: 0.01
+  root_type: node
+  variables:
+    independent:
+      x:
+        type: node
+        initialize: np.random.uniform(0.0, 1.0, (1, V))
+        update: x + dx * dt
+      delta:
+        type: node
+        initialize: np.random.uniform(0.0, 5.0, (1, V))
+        update: delta
+    dependent:
+      dx:
+        type: node
+        GD_expr: -delta * x + aggr((1 - term(x, G, A)) * sour(x, G, A), G, A)
+  plot: [x]

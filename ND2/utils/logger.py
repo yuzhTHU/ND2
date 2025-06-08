@@ -35,14 +35,14 @@ class LogFormatter(logging.Formatter):
             prefixes.append(f"{record.filename}:{record.lineno}")
         prefix = f"[{'|'.join(map(str, prefixes))}]"
         message = record.getMessage() or ''
-        message = message.replace('\n', '\n' + ' '*len(prefix))
+        message = message.replace('\n', '\n' + ' '*len(prefix + " "))
         if self.colorful:
             return self.color_dict.get(record.levelname, '{}').format(prefix) + " " + message
         else:
             return prefix + " " + re.sub(r'\033\[\d+;?\d*m', '', message)
 
 
-def init_logger(exp_name, log_file=None, quiet=False, root_name='ND2', info_level='info'):
+def init_logger(exp_name=None, log_file=None, root_name='ND2', info_level='info'):
     """
     运行一次 init_logger 后，可以通过 logging.getLogger('{root_name}.xxx') 获取 logger,
     与这里设置的 logger 具有相同的 Handler 和 Formatter
