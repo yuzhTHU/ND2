@@ -27,7 +27,7 @@ CR: # Phase Synchronization of Coupled Rossler Oscillators: Amplitude Effect (Co
     dependent:
       dx:
         type: node
-        GD_expr: -omega * y - z + 0.5 * aggr(sin(sour(x, G, A)-term(x, G, A)), G, A)
+        GD_expr: -omega * y - z + 0.5 * aggr(sin(sour(x, G, A)-targ(x, G, A)), G, A)
       dy:
         type: node
         GD_expr: omega * x + 0.165 * y
@@ -57,7 +57,7 @@ FHN:
     dependent:
       dx:
         type: node
-        GD_expr: x - x**3 - y - 1 * aggr(sour(x, G, A) - term(x, G, A), G, A) / aggr(1, G, A)
+        GD_expr: x - x**3 - y - 1 * aggr(sour(x, G, A) - targ(x, G, A), G, A) / aggr(1, G, A)
       dy:
         type: node
         GD_expr: 0.28 + 0.5 * x - 0.04 * y
@@ -109,7 +109,7 @@ HCR: # Autonomous inference of complex network dynamics from incomplete and nois
     dependent:
       dx:
         type: node
-        GD_expr: -y - z + 0.5 * aggr(sin(sour(x, G, A)-term(x, G, A)), G, A)
+        GD_expr: -y - z + 0.5 * aggr(sin(sour(x, G, A)-targ(x, G, A)), G, A)
       dy:
         type: node
         GD_expr: x + 0.165 * y
@@ -121,16 +121,16 @@ HCR: # Autonomous inference of complex network dynamics from incomplete and nois
 
 KUR:
   network: 
-    use: baseline/NCS22/data/Networks/Northern-European_adj.csv
+    use: ./data/networks/NorthernEuropeanGrid.csv
   N: 1000
   dt: 0.01
   root_type: node
   variables:
     independent:
-      theta:
+      x:
         type: node
         initialize: np.random.uniform(-np.pi, np.pi, (1, V))
-        update: np.mod(theta + omega * dt + np.pi, 2 * np.pi) - np.pi
+        update: np.mod(x + omega * dt + np.pi, 2 * np.pi) - np.pi
       omega0:
         type: node
         initialize: np.random.uniform(-5, 5, (1, V))
@@ -138,7 +138,7 @@ KUR:
     dependent:
       omega:
         type: node
-        GD_expr: omega0 + 1.0*aggr(sin(sour(theta, G, A)-term(theta, G, A)), G, A)
+        GD_expr: omega0 + 1.0*aggr(sin(sour(x, G, A)-targ(x, G, A)), G, A)
   plot: [sin(x)]
 
 
@@ -168,7 +168,7 @@ LV:
     dependent:
       dx:
         type: node
-        GD_expr: x * (alpha - theta * x) - aggr(term(x, G, A) * sour(x, G, A), G, A)
+        GD_expr: x * (alpha - theta * x) - aggr(targ(x, G, A) * sour(x, G, A), G, A)
   plot: [x]
 
 MM:
@@ -236,7 +236,7 @@ MP:
     dependent:
       dx:
         type: node
-        GD_expr: x * (alpha - theta * x) + aggr(term(x, G, A) * sour(regular(x, 2), G, A), G, A)
+        GD_expr: x * (alpha - theta * x) + aggr(targ(x, G, A) * sour(regular(x, 2), G, A), G, A)
   plot: [x]
 
 SIS:
@@ -260,5 +260,5 @@ SIS:
     dependent:
       dx:
         type: node
-        GD_expr: -delta * x + aggr((1 - term(x, G, A)) * sour(x, G, A), G, A)
+        GD_expr: -delta * x + aggr((1 - targ(x, G, A)) * sour(x, G, A), G, A)
   plot: [x]
